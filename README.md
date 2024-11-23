@@ -1,8 +1,4 @@
 # BlueDiamond's AltStore Repo
-
-![GitHub last commit](https://img.shields.io/github/last-commit/BlueDiamond2021YT/MySideStoreRepo)
-![GitHub repo size](https://img.shields.io/github/repo-size/BlueDiamond2021YT/MySideStoreRepo)
-![GitHub issues](https://img.shields.io/github/issues/BlueDiamond2021YT/MySideStoreRepo)
 <br>
 <p align="center">
   <a href="altstore://source?URL=https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/sidestore_repo.json">

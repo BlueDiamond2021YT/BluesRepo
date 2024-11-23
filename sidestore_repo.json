@@ -11,7 +11,7 @@
             "versionDate": "2024-11-21",
             "versionDescription": "Latest SideStore Nightly Build.",
             "beta": true,
-            "size" : 0,
+            "size" : 9300000,
             "localizedDescription": "Sideload apps without AltServer.",
             "iconURL": "https://example.com/SideStore-icon.png",
             "tintColor": "A405FA",

@@ -7,10 +7,14 @@ import io
 # Get the GitHub token from environment variables
 GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
 
-# Constants for the repository
-REPO_OWNER = 'khanhduytran0'
-REPO_NAME = 'LiveContainer'
-WORKFLOW_ID = 'build.yml'
+# Constants for the repository from which to fetch the artifact
+SOURCE_REPO_OWNER = 'khanhduytran0'  # Owner of the source repository
+SOURCE_REPO_NAME = 'LiveContainer'     # Name of the source repository
+WORKFLOW_ID = 'build.yml'              # Workflow ID to fetch artifacts from
+
+# Get the current repository information dynamically
+CURRENT_REPO_OWNER = os.environ.get('GITHUB_REPOSITORY_OWNER')
+CURRENT_REPO_NAME = os.environ.get('GITHUB_REPOSITORY_NAME')
 
 # Headers for authentication
 headers = {
@@ -18,9 +22,9 @@ headers = {
     'Accept': 'application/vnd.github.v3+json'
 }
 
-# Fetch the latest workflow runs
+# Fetch the latest workflow runs from the source repository
 response = requests.get(
-    f'https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/actions/workflows/{WORKFLOW_ID}/runs',
+    f'https://api.github.com/repos/{SOURCE_REPO_OWNER}/{SOURCE_REPO_NAME}/actions/workflows/{WORKFLOW_ID}/runs',
     headers=headers
 )
 
@@ -39,9 +43,9 @@ except StopIteration:
 
 run_id = latest_run['id']
 
-# Fetch artifacts for the latest successful run
+# Fetch artifacts for the latest successful run from the source repository
 artifacts_response = requests.get(
-    f'https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/actions/runs/{run_id}/artifacts',
+    f'https://api.github.com/repos/{SOURCE_REPO_OWNER}/{SOURCE_REPO_NAME}/actions/runs/{run_id}/artifacts',
     headers=headers
 )
 
@@ -101,7 +105,12 @@ except (FileNotFoundError, ValueError) as e:
 
 data['apps'][0]['version'] = version
 data['apps'][0]['versionDate'] = latest_run['created_at'].split('T')[0]
-data['apps'][0]['downloadURL'] = save_path  # Link to saved IPA
+
+# Construct the download URL dynamically based on current repo info
+download_url = f"https://raw.githubusercontent.com/{CURRENT_REPO_OWNER}/{CURRENT_REPO_NAME}/main/downloads/{ipa_file_name[:-4]}-{version}.ipa"
+
+# Update JSON data with the formatted download URL
+data['apps'][0]['downloadURL'] = download_url  # Link to saved IPA
 
 # Save updated JSON file and print its contents to the console
 try:

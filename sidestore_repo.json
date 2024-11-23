@@ -9,7 +9,7 @@
             "bundleIdentifier": "com.kdt.livecontainer",
             "developerName": "khanhduytran0",
             "subtitle": "Run iOS app without actually installing it!",
-            "version": "5d54a31",
+            "version": "5d54a30",
             "versionDate": "2024-11-18",
             "versionDescription": "Latest build of LiveContainer",
             "downloadURL": "https://api.github.com/repos/khanhduytran0/LiveContainer/actions/artifacts/2199758150/zip",

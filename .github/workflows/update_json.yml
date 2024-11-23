@@ -2,8 +2,7 @@ name: Update AltStore repo JSON
 
 on:
   schedule:
-    - cron: '* * * * *' # Runs daily at midnight UTC
-  workflow_dispatch: # Enable manual triggering
+    - cron: '30 * * * *' # Runs every 30 mins.
 
 permissions:
   contents: write

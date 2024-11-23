@@ -5,7 +5,7 @@ import json
 # Get the GitHub token from environment variables
 GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
 
-# Constants for the SideStore repository
+# Constants for the repository
 REPO_OWNER = 'khanhduytran0'
 REPO_NAME = 'LiveContainer'
 WORKFLOW_ID = 'build.yml'
@@ -35,14 +35,29 @@ except StopIteration:
     print("No successful runs found.")
     exit(1)
 
-# Extract necessary details for updating JSON file
-version = latest_run['head_commit']['id'][:7]  # Example using commit hash
-version_date = latest_run['created_at'].split('T')[0]
-download_url = f"https://github.com/{REPO_OWNER}/{REPO_NAME}/releases/download/nightly/SideStore.ipa"  # Adjust if needed
+run_id = latest_run['id']
 
-print(f"Latest Version: {version}")
-print(f"Version Date: {version_date}")
-print(f"Download URL: {download_url}")
+# Fetch artifacts for the latest successful run
+artifacts_response = requests.get(
+    f'https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/actions/runs/{run_id}/artifacts',
+    headers=headers
+)
+
+if artifacts_response.status_code != 200:
+    print(f"Failed to fetch artifacts: {artifacts_response.status_code}")
+    exit(1)
+
+artifacts = artifacts_response.json()
+
+# Assume the first artifact is the one we need; adjust logic as necessary
+if not artifacts['artifacts']:
+    print("No artifacts found.")
+    exit(1)
+
+artifact = artifacts['artifacts'][0]
+artifact_url = artifact['archive_download_url']
+
+print(f"Artifact Download URL: {artifact_url}")
 
 # Load existing JSON file and update it with new information
 try:
@@ -54,9 +69,9 @@ except (FileNotFoundError, ValueError) as e:
     print(f"Error loading JSON file: {e}")
     exit(1)
 
-data['apps'][0]['version'] = version
-data['apps'][0]['versionDate'] = version_date
-data['apps'][0]['downloadURL'] = download_url
+data['apps'][0]['version'] = latest_run['head_commit']['id'][:7]
+data['apps'][0]['versionDate'] = latest_run['created_at'].split('T')[0]
+data['apps'][0]['downloadURL'] = artifact_url
 
 # Save updated JSON file and print its contents to the console
 try:

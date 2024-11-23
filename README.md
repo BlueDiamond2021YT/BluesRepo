@@ -18,8 +18,10 @@ Run iOS apps without actually installing them!
 
 [LiveContainer](https://github.com/khanhduytran0/LiveContainer) by [khanhduytran0](https://github.com/khanhduytran0)
 
-## Add to SideStore
+## Add to AltStore/SideStore
 
 To add this source to SideStore, use the following URL:
+[![Add to Altstore](https://i.imgur.com/46qhEAv.png)]
+(https://raw.githubusercontent.com/BlueDiamond2021YT/MySideStoreRepo/main/sidestore_repo.json)
 
 https://raw.githubusercontent.com/BlueDiamond2021YT/MySideStoreRepo/main/sidestore_repo.json

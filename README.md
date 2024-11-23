@@ -4,7 +4,10 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/BlueDiamond2021YT/MySideStoreRepo)
 ![GitHub issues](https://img.shields.io/github/issues/BlueDiamond2021YT/MySideStoreRepo)
 <br>
-[![Add to AltStore/SideStore](https://raw.githubusercontent.com/BlueDiamond2021YT/MySideStoreRepo/main/resources/SideStoreLogo.png)](your-link-here)
+<a href="your-link-here">
+    <img src="https://raw.githubusercontent.com/BlueDiamond2021YT/MySideStoreRepo/main/resources/SideStoreLogo.png" alt="Add to AltStore/SideStore" width="20" style="vertical-align: middle;"/> 
+    Add to AltStore/SideStore
+</a>
 <br>
 An AltSource repository for SideStore, featuring workflow builds of LiveContainer sourced from the origional github repo.
 

@@ -65,7 +65,7 @@ if zip_response.status_code != 200:
     print(f"Failed to download artifact: {zip_response.status_code}")
     exit(1)
 
-# Extract the .ipa file from the downloaded zip
+# Extract the .ipa file from the downloaded zip and save it in ./downloads/
 with zipfile.ZipFile(io.BytesIO(zip_response.content)) as z:
     ipa_files = [f for f in z.namelist() if f.endswith('.ipa')]
     
@@ -76,10 +76,15 @@ with zipfile.ZipFile(io.BytesIO(zip_response.content)) as z:
     # Assuming we take the first .ipa file found
     ipa_file_name = ipa_files[0]
     
-    # Optionally extract it to a specific location or keep it in memory
-    z.extract(ipa_file_name)  # This extracts it to current working directory
+    # Define version for naming and save path
+    version = latest_run['head_commit']['id'][:7]  # Shorten commit hash for filename
+    save_path = f"./downloads/{ipa_file_name[:-4]}-{version}.ipa"
 
-print(f"Extracted IPA File: {ipa_file_name}")
+    # Extract and save .ipa file to specified path
+    with open(save_path, 'wb') as ipa_file:
+        ipa_file.write(z.read(ipa_file_name))
+
+print(f"Extracted and saved IPA File: {save_path}")
 
 # Load existing JSON file and update it with new information
 try:
@@ -91,9 +96,9 @@ except (FileNotFoundError, ValueError) as e:
     print(f"Error loading JSON file: {e}")
     exit(1)
 
-data['apps'][0]['version'] = latest_run['head_commit']['id'][:7]
+data['apps'][0]['version'] = version
 data['apps'][0]['versionDate'] = latest_run['created_at'].split('T')[0]
-data['apps'][0]['downloadURL'] = ipa_file_name  # Link to extracted IPA
+data['apps'][0]['downloadURL'] = save_path  # Link to saved IPA
 
 # Save updated JSON file and print its contents to the console
 try:

@@ -64,6 +64,6 @@
           "SBAppUsesLocalNotifications": "The guest app is requesting for this permission.",
           "UIApplicationSceneManifest": "The guest app is requesting for this permission."
         }
-      },
+      }
     }
 }

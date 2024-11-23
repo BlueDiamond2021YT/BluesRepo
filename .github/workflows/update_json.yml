@@ -3,6 +3,7 @@ name: Update SideStore JSON
 on:
   schedule:
     - cron: '0 0 * * *' # Runs daily at midnight UTC
+  workflow_dispatch: # Enable manual triggering
 
 jobs:
   update-json:
@@ -22,5 +23,5 @@ jobs:
 
       - name: Run Update Script
         env:
-          GITHUB_TOKEN: ${{ secrets.SIDESTORE_UPDATE_TOKEN }}  # Use your secret name here
+          GITHUB_TOKEN: ${{ secrets.SIDESTORE_UPDATE_TOKEN }}
         run: python update_json.py

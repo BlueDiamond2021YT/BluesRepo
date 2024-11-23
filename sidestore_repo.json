@@ -5,7 +5,7 @@
   "apps": [
         {
             "name": "SideStore Nightly",
-            "bundleIdentifier": "com.sidestore.app",
+            "bundleIdentifier": "com.SideStore.SideStore",
             "developerName": "SideStore Team",
             "version": "66abac8",
             "versionDate": "2024-11-21",

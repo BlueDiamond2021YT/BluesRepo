@@ -40,10 +40,13 @@ version = latest_run['head_commit']['id'][:7]  # Example using commit hash
 version_date = latest_run['created_at'].split('T')[0]
 download_url = f"https://github.com/{REPO_OWNER}/{REPO_NAME}/releases/download/nightly/SideStore.ipa"  # Adjust if needed
 
+print(f"Latest Version: {version}")
+print(f"Version Date: {version_date}")
+print(f"Download URL: {download_url}")
+
 # Load existing JSON file and update it with new information
 try:
     with open('sidestore_repo.json', 'r') as file:
-        # Check if the file is empty
         if os.stat('sidestore_repo.json').st_size == 0:
             raise ValueError("JSON file is empty.")
         data = json.load(file)
@@ -56,6 +59,9 @@ data['apps'][0]['versionDate'] = version_date
 data['apps'][0]['downloadURL'] = download_url
 
 # Save updated JSON file
-with open('sidestore_repo.json', 'w') as file:
-    json.dump(data, file, indent=4)
-    print("JSON file updated successfully.")
+try:
+    with open('sidestore_repo.json', 'w') as file:
+        json.dump(data, file, indent=4)
+        print("JSON file updated successfully.")
+except Exception as e:
+    print(f"Error writing to JSON file: {e}")

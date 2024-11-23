@@ -1,4 +1,4 @@
-# Blue's-Repo
+# Blue's AltStore Repo
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/BlueDiamond2021YT/MySideStoreRepo)
 ![GitHub repo size](https://img.shields.io/github/repo-size/BlueDiamond2021YT/MySideStoreRepo)

@@ -22,7 +22,6 @@ Run iOS apps without actually installing them!
 
 To add this source to SideStore, use the following URL:
 
-[![Add to Altstore](https://i.imgur.com/46qhEAv.png)]
-(altstore://source?url=https://raw.githubusercontent.com/BlueDiamond2021YT/MySideStoreRepo/main/sidestore_repo.json)
+[![Add to Altstore](https://i.imgur.com/46qhEAv.png)](altstore://source?url=https://raw.githubusercontent.com/BlueDiamond2021YT/MySideStoreRepo/main/sidestore_repo.json)]
 
 https://raw.githubusercontent.com/BlueDiamond2021YT/MySideStoreRepo/main/sidestore_repo.json

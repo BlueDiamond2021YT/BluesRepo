@@ -11,10 +11,12 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4 # Ensure this is updated to v4
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # Use default token
 
       - name: Set up Python
-        uses: actions/setup-python@v5 # Update to v5 if available
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
@@ -23,7 +25,7 @@ jobs:
 
       - name: Run Update Script
         env:
-          GITHUB_TOKEN: ${{ secrets.SIDESTORE_UPDATE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python update_json.py
 
       - name: Configure Git
@@ -38,6 +40,6 @@ jobs:
 
       - name: Push Changes
         env:
-          GITHUB_TOKEN: ${{ secrets.SIDESTORE_UPDATE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git push origin HEAD:${{ github.ref }}

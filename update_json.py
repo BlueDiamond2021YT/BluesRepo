@@ -1,6 +1,8 @@
 import os
 import requests
 import json
+import zipfile
+import io
 
 # Get the GitHub token from environment variables
 GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
@@ -49,16 +51,35 @@ if artifacts_response.status_code != 200:
 
 artifacts = artifacts_response.json()
 
-# Find the .ipa artifact
-ipa_artifact = next((artifact for artifact in artifacts['artifacts'] if artifact['name'].endswith('.ipa')), None)
-
-if not ipa_artifact:
-    print("No .ipa artifact found.")
+# Assume we want the first artifact; adjust logic as necessary
+if not artifacts['artifacts']:
+    print("No artifacts found.")
     exit(1)
 
-artifact_url = ipa_artifact['archive_download_url']
+artifact = artifacts['artifacts'][0]
+artifact_url = artifact['archive_download_url']
 
-print(f"IPA Artifact Download URL: {artifact_url}")
+# Download the artifact zip file
+zip_response = requests.get(artifact_url, headers=headers)
+if zip_response.status_code != 200:
+    print(f"Failed to download artifact: {zip_response.status_code}")
+    exit(1)
+
+# Extract the .ipa file from the downloaded zip
+with zipfile.ZipFile(io.BytesIO(zip_response.content)) as z:
+    ipa_files = [f for f in z.namelist() if f.endswith('.ipa')]
+    
+    if not ipa_files:
+        print("No .ipa files found in the artifact.")
+        exit(1)
+    
+    # Assuming we take the first .ipa file found
+    ipa_file_name = ipa_files[0]
+    
+    # Optionally extract it to a specific location or keep it in memory
+    z.extract(ipa_file_name)  # This extracts it to current working directory
+
+print(f"Extracted IPA File: {ipa_file_name}")
 
 # Load existing JSON file and update it with new information
 try:
@@ -72,7 +93,7 @@ except (FileNotFoundError, ValueError) as e:
 
 data['apps'][0]['version'] = latest_run['head_commit']['id'][:7]
 data['apps'][0]['versionDate'] = latest_run['created_at'].split('T')[0]
-data['apps'][0]['downloadURL'] = artifact_url
+data['apps'][0]['downloadURL'] = ipa_file_name  # Link to extracted IPA
 
 # Save updated JSON file and print its contents to the console
 try:

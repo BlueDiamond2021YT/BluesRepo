@@ -27,5 +27,5 @@ Run iOS apps without actually installing them!
 
 To add this source to Alt/SideStore, either press the button at the top of the readme.md or copy and paste the following URL:
 ```
-https://raw.githubusercontent.com/BlueDiamond2021YT/MySideStoreRepo/main/sidestore_repo.json
+https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/sidestore_repo.json
 ```

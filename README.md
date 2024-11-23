@@ -17,7 +17,7 @@ I origionally made this repo to be able to stay up to date with the LiveContaine
 ## Apps
 
 ### [LiveContainer](https://github.com/khanhduytran0/LiveContainer)
-By [khanhduytran0](https://github.com/khanhduytran0)
+> By [khanhduytran0](https://github.com/khanhduytran0)
 
 Run iOS apps without actually installing them!
 

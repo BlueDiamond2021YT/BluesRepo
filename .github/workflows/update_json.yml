@@ -33,13 +33,13 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config user.name github-actions[bot]
-          git config user.email github-actions[bot]@users.noreply.github.com
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Commit Changes
         run: |
-          git add sidestore_repo.json
-          git commit -m "Update SideStore JSON file"
+          git add sidestore_repo.json downloads/
+          git commit -m "Update SideStore JSON file and add new IPA"
 
       - name: Push Changes
         env:

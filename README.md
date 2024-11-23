@@ -4,7 +4,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/BlueDiamond2021YT/MySideStoreRepo)
 ![GitHub issues](https://img.shields.io/github/issues/BlueDiamond2021YT/MySideStoreRepo)
 
-An AltSource repository for SideStore, featuring nightly builds of LiveContainer.
+An AltSource repository for SideStore, featuring workflow builds of LiveContainer sourced from the origional github repo.
 
 ## Apps
 

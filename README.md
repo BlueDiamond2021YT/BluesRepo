@@ -1,3 +1,6 @@
+> [!NOTE]
+> Most of this repo was made using AI
+
 # BlueDiamond's AltStore Repo
 <br>
 <p align="center">

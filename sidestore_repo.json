@@ -9,15 +9,14 @@
             "developerName": "SideStore Team",
             "version": "66abac8",
             "versionDate": "2024-11-21",
-            "versionDescription": "Latest SideStore Nightly Build."
+            "versionDescription": "Latest SideStore Nightly Build.",
             "beta": true,
             "size" : 0,
             "localizedDescription": "Sideload apps without AltServer.",
             "iconURL": "https://example.com/SideStore-icon.png",
             "tintColor": "A405FA",
             "downloadURL": "https://github.com/SideStore/SideStore/releases/download/nightly/SideStore.ipa",
-            "subtitle" : "The latest Nightly build of sidestore"
-          
+            "subtitle" : "The latest Nightly build of sidestore",
             "permissions": [
         {
           "type": "background-fetch",

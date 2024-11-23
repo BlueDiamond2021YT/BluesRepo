@@ -25,3 +25,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.SIDESTORE_UPDATE_TOKEN }}
         run: python update_json.py
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Commit Changes
+        run: |
+          git add sidestore_repo.json
+          git commit -m "Update SideStore JSON file"
+
+      - name: Push Changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.SIDESTORE_UPDATE_TOKEN }}
+        run: |
+          git push origin HEAD:${{ github.ref }}

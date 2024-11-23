@@ -1,5 +1,5 @@
-> [!NOTE]
-> Most of this repo was made using AI
+> [!Note]
+> The workflow and python script where both made by AI
 
 # BlueDiamond's AltStore Repo
 

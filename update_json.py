@@ -13,8 +13,7 @@ SOURCE_REPO_NAME = 'LiveContainer'     # Name of the source repository
 WORKFLOW_ID = 'build.yml'              # Workflow ID to fetch artifacts from
 
 # Get the current repository information dynamically
-CURRENT_REPO_OWNER = os.environ.get('GITHUB_REPOSITORY_OWNER')
-CURRENT_REPO_NAME = os.environ.get('GITHUB_REPOSITORY_NAME')
+CURRENT_REPO = os.environ.get('GITHUB_REPOSITORY')
 
 # Headers for authentication
 headers = {
@@ -107,7 +106,7 @@ data['apps'][0]['version'] = version
 data['apps'][0]['versionDate'] = latest_run['created_at'].split('T')[0]
 
 # Construct the download URL dynamically based on current repo info
-download_url = f"https://raw.githubusercontent.com/{CURRENT_REPO_OWNER}/{CURRENT_REPO_NAME}/main/downloads/{ipa_file_name[:-4]}-{version}.ipa"
+download_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/downloads/{ipa_file_name[:-4]}-{version}.ipa"
 
 # Update JSON data with the formatted download URL
 data['apps'][0]['downloadURL'] = download_url  # Link to saved IPA

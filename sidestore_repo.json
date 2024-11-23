@@ -17,8 +17,6 @@
             "tintColor": "A405FA",
             "downloadURL": "https://github.com/SideStore/SideStore/releases/download/nightly/SideStore.ipa",
             "subtitle" : "The latest build of LiveContainer"
-        }
-      ]
     }
-  ],
+  ]
 }

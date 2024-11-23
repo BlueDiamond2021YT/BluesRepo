@@ -1,11 +1,14 @@
+import os
 import requests
 import json
 
-# Constants
+# Get the GitHub token from environment variables
+GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
+
+# Constants for the SideStore repository
 REPO_OWNER = 'SideStore'
 REPO_NAME = 'SideStore'
-WORKFLOW_ID = 'nightly.yml'  # The ID or filename of the workflow
-GITHUB_TOKEN = 'your_github_token'  # Store this securely as a secret
+WORKFLOW_ID = 'nightly.yml'
 
 # Headers for authentication
 headers = {
@@ -23,16 +26,15 @@ runs = response.json()
 # Get the latest successful run
 latest_run = next(run for run in runs['workflow_runs'] if run['conclusion'] == 'success')
 
-# Extract necessary details
+# Extract necessary details for updating JSON file
 version = latest_run['head_commit']['id'][:7]  # Example using commit hash
 version_date = latest_run['created_at'].split('T')[0]
 download_url = f"https://github.com/{REPO_OWNER}/{REPO_NAME}/releases/download/nightly/SideStore.ipa"  # Adjust if needed
 
-# Load existing JSON file
+# Load existing JSON file and update it with new information
 with open('sidestore_repo.json', 'r') as file:
     data = json.load(file)
 
-# Update JSON with new information
 data['apps'][0]['version'] = version
 data['apps'][0]['versionDate'] = version_date
 data['apps'][0]['downloadURL'] = download_url

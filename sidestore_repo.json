@@ -1,14 +1,14 @@
 {
-  "apps": [
-    {
-      "name": "SideStore",
-      "bundleIdentifier": "com.sidestore.app",
-      "developerName": "SideStore Team",
-      "version": "",
-      "versionDate": "",
-      "downloadURL": "",
-      "localizedDescription": "Sideload apps without AltServer.",
-      "iconURL": "https://example.com/SideStore-icon.png"
-    }
-  ]
+    "apps": [
+        {
+            "name": "SideStore",
+            "bundleIdentifier": "com.sidestore.app",
+            "developerName": "SideStore Team",
+            "version": "66abac8",
+            "versionDate": "2024-11-21",
+            "downloadURL": "https://github.com/SideStore/SideStore/releases/download/nightly/SideStore.ipa",
+            "localizedDescription": "Sideload apps without AltServer.",
+            "iconURL": "https://example.com/SideStore-icon.png"
+        }
+    ]
 }

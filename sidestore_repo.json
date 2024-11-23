@@ -12,7 +12,7 @@
             "versionDescription": "Latest LiveContainer Build.",
             "beta": true,
             "size" : 9300000,
-            "localizedDescription": "Use iOS apps without installing them!"
+            "localizedDescription": "Use iOS apps without installing them!",
             "iconURL": "https://raw.githubusercontent.com/khanhduytran0/LiveContainer/refs/heads/main/Resources/AppIcon76x76.png",
             "tintColor": "A405FA",
             "downloadURL": "https://github.com/SideStore/SideStore/releases/download/nightly/SideStore.ipa",

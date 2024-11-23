@@ -54,14 +54,16 @@ except (FileNotFoundError, ValueError) as e:
     print(f"Error loading JSON file: {e}")
     exit(1)
 
-data['apps'][0]['version'] = "{version}"
-data['apps'][0]['versionDate'] = "{version_date}"
-data['apps'][0]['downloadURL'] = "{download_url}"
+data['apps'][0]['version'] = version
+data['apps'][0]['versionDate'] = version_date
+data['apps'][0]['downloadURL'] = download_url
 
-# Save updated JSON file
+# Save updated JSON file and print its contents to the console
 try:
     with open('sidestore_repo.json', 'w') as file:
         json.dump(data, file, indent=4)
+        print("Updated JSON content:")
+        print(json.dumps(data, indent=4))
         print("JSON file updated successfully.")
 except Exception as e:
     print(f"Error writing to JSON file: {e}")

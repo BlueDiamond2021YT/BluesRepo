@@ -21,10 +21,19 @@ response = requests.get(
     f'https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/actions/workflows/{WORKFLOW_ID}/runs',
     headers=headers
 )
+
+if response.status_code != 200:
+    print(f"Failed to fetch workflow runs: {response.status_code}")
+    exit(1)
+
 runs = response.json()
 
 # Get the latest successful run
-latest_run = next(run for run in runs['workflow_runs'] if run['conclusion'] == 'success')
+try:
+    latest_run = next(run for run in runs['workflow_runs'] if run['conclusion'] == 'success')
+except StopIteration:
+    print("No successful runs found.")
+    exit(1)
 
 # Extract necessary details for updating JSON file
 version = latest_run['head_commit']['id'][:7]  # Example using commit hash
@@ -32,8 +41,15 @@ version_date = latest_run['created_at'].split('T')[0]
 download_url = f"https://github.com/{REPO_OWNER}/{REPO_NAME}/releases/download/nightly/SideStore.ipa"  # Adjust if needed
 
 # Load existing JSON file and update it with new information
-with open('sidestore_repo.json', 'r') as file:
-    data = json.load(file)
+try:
+    with open('sidestore_repo.json', 'r') as file:
+        # Check if the file is empty
+        if os.stat('sidestore_repo.json').st_size == 0:
+            raise ValueError("JSON file is empty.")
+        data = json.load(file)
+except (FileNotFoundError, ValueError) as e:
+    print(f"Error loading JSON file: {e}")
+    exit(1)
 
 data['apps'][0]['version'] = version
 data['apps'][0]['versionDate'] = version_date
@@ -42,3 +58,4 @@ data['apps'][0]['downloadURL'] = download_url
 # Save updated JSON file
 with open('sidestore_repo.json', 'w') as file:
     json.dump(data, file, indent=4)
+    print("JSON file updated successfully.")

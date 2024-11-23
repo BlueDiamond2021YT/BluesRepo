@@ -1,39 +1,22 @@
 {
   "name": "Nightly Builds",
   "identifier": "com.Diamond.Nightly",
-  "sourceURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/MySideStoreRepo/refs/heads/main/sidestore_repo.json",
+  "sourceURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/MySideStoreRepo/main/sidestore_repo.json",
   "apps": [
         {
-            "name": "SideStore Nightly",
-            "bundleIdentifier": "com.SideStore.SideStore",
-            "developerName": "SideStore Team",
-            "version": "0.5.9",
-            "versionDate": "2024-11-22",
-            "versionDescription": "Latest SideStore Nightly Build.",
+            "name": "LiveContainer",
+            "bundleIdentifier": "com.kdt.livecontainer",
+            "developerName": "khanhduytran0",
+            "version": "null",
+            "versionDate": "null",
+            "versionDescription": "Latest LiveContainer Build.",
             "beta": true,
             "size" : 9300000,
-            "localizedDescription": "Sideload apps without AltServer.",
-            "iconURL": "https://apps.sidestore.io/apps/sidestore/v0.1.1/icon.png",
+            "localizedDescription": "Use iOS apps without installing them!"
+            "iconURL": "https://raw.githubusercontent.com/khanhduytran0/LiveContainer/refs/heads/main/Resources/AppIcon76x76.png",
             "tintColor": "A405FA",
             "downloadURL": "https://github.com/SideStore/SideStore/releases/download/nightly/SideStore.ipa",
-            "screenshotURLs": [
-            "https://apps.sidestore.io/apps/sidestore/v0.1.1/browse-dark.png",
-            "https://apps.sidestore.io/apps/sidestore/v0.1.1/apps-dark.png",
-            "https://apps.sidestore.io/apps/sidestore/v0.1.1/news-dark.png",
-            "https://apps.sidestore.io/apps/sidestore/v0.1.1/browse-light.png",
-            "https://apps.sidestore.io/apps/sidestore/v0.1.1/apps-light.png",
-            "https://apps.sidestore.io/apps/sidestore/v0.1.1/news-light.png"
-            ],
-            "subtitle" : "The latest Nightly build of sidestore",
-            "permissions": [
-        {
-          "type": "background-fetch",
-          "usageDescription": "SideStore periodically refreshes apps in the background to prevent them from expiring."
-        },
-        {
-          "type": "background-audio",
-          "usageDescription": "Allows SideStore to run longer than 30 seconds when refreshing apps in background."
-        }
+            "subtitle" : "The latest build of LiveContainer"
       ]
     }
   ],

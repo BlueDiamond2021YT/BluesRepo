@@ -1,4 +1,4 @@
-name: Update SideStore JSON
+name: Update AltStore repo JSON
 
 on:
   schedule:

@@ -7,7 +7,7 @@
             "name": "SideStore Nightly",
             "bundleIdentifier": "com.SideStore.SideStore",
             "developerName": "SideStore Team",
-            "version": "66abac9",
+            "version": "0.5.9",
             "versionDate": "2024-11-22",
             "versionDescription": "Latest SideStore Nightly Build.",
             "beta": true,

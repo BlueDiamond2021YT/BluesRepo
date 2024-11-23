@@ -1,7 +1,7 @@
 {
   "name": "Nightly Builds",
   "identifier": "com.Diamond.Nightly",
-  "sourceURL": "https://apps.sidestore.io",
+  "sourceURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/MySideStoreRepo/refs/heads/main/sidestore_repo.json",
   "apps": [
         {
             "name": "SideStore Nightly",

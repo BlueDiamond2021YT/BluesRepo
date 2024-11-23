@@ -1,13 +1,17 @@
 {
-    "apps": [
+  "name": "Nightly Builds",
+  "identifier": "com.Diamond.Nightly",
+  "sourceURL": "https://apps.sidestore.io",
+  "apps": [
         {
-            "name": "SideStore",
+            "name": "SideStore Nightly",
             "bundleIdentifier": "com.sidestore.app",
             "developerName": "SideStore Team",
             "version": "66abac8",
             "versionDate": "2024-11-21",
             "downloadURL": "https://github.com/SideStore/SideStore/releases/download/nightly/SideStore.ipa",
             "localizedDescription": "Sideload apps without AltServer.",
+            "beta": true,
             "iconURL": "https://example.com/SideStore-icon.png"
         }
     ]

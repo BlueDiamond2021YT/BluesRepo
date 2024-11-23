@@ -65,6 +65,9 @@ if zip_response.status_code != 200:
     print(f"Failed to download artifact: {zip_response.status_code}")
     exit(1)
 
+# Create downloads directory if it doesn't exist
+os.makedirs('./downloads', exist_ok=True)
+
 # Extract the .ipa file from the downloaded zip and save it in ./downloads/
 with zipfile.ZipFile(io.BytesIO(zip_response.content)) as z:
     ipa_files = [f for f in z.namelist() if f.endswith('.ipa')]

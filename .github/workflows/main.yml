@@ -1,4 +1,4 @@
-name: Update SideStore Repo JSON
+name: Update SideStore JSON
 
 on:
   schedule:
@@ -7,6 +7,7 @@ on:
 jobs:
   update-json:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -19,8 +20,7 @@ jobs:
       - name: Install Dependencies
         run: pip install requests
 
-      - name: Update JSON File
+      - name: Run Update Script
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          python update_json.py
+          GITHUB_TOKEN: ${{ secrets.SIDESTORE_UPDATE_TOKEN }}  # Use your secret name here
+        run: python update_json.py

@@ -13,9 +13,17 @@
             "beta": true,
             "size" : 9300000,
             "localizedDescription": "Sideload apps without AltServer.",
-            "iconURL": "https://example.com/SideStore-icon.png",
+            "iconURL": "https://apps.sidestore.io/apps/sidestore/v0.1.1/icon.png",
             "tintColor": "A405FA",
             "downloadURL": "https://github.com/SideStore/SideStore/releases/download/nightly/SideStore.ipa",
+            "screenshotURLs": [
+            "https://apps.sidestore.io/apps/sidestore/v0.1.1/browse-dark.png",
+            "https://apps.sidestore.io/apps/sidestore/v0.1.1/apps-dark.png",
+            "https://apps.sidestore.io/apps/sidestore/v0.1.1/news-dark.png",
+            "https://apps.sidestore.io/apps/sidestore/v0.1.1/browse-light.png",
+            "https://apps.sidestore.io/apps/sidestore/v0.1.1/apps-light.png",
+            "https://apps.sidestore.io/apps/sidestore/v0.1.1/news-light.png"
+            ],
             "subtitle" : "The latest Nightly build of sidestore",
             "permissions": [
         {

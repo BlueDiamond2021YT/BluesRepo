@@ -49,15 +49,16 @@ if artifacts_response.status_code != 200:
 
 artifacts = artifacts_response.json()
 
-# Assume the first artifact is the one we need; adjust logic as necessary
-if not artifacts['artifacts']:
-    print("No artifacts found.")
+# Find the .ipa artifact
+ipa_artifact = next((artifact for artifact in artifacts['artifacts'] if artifact['name'].endswith('.ipa')), None)
+
+if not ipa_artifact:
+    print("No .ipa artifact found.")
     exit(1)
 
-artifact = artifacts['artifacts'][0]
-artifact_url = artifact['archive_download_url']
+artifact_url = ipa_artifact['archive_download_url']
 
-print(f"Artifact Download URL: {artifact_url}")
+print(f"IPA Artifact Download URL: {artifact_url}")
 
 # Load existing JSON file and update it with new information
 try:

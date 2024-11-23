@@ -54,9 +54,9 @@ except (FileNotFoundError, ValueError) as e:
     print(f"Error loading JSON file: {e}")
     exit(1)
 
-data['apps'][0]['version'] = {version}
-data['apps'][0]['versionDate'] = {version_date}
-data['apps'][0]['downloadURL'] = {download_url}
+data['apps'][0]['version'] = "{version}"
+data['apps'][0]['versionDate'] = "{version_date}"
+data['apps'][0]['downloadURL'] = "{download_url}"
 
 # Save updated JSON file
 try:

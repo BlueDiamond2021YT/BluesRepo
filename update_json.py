@@ -8,7 +8,7 @@ GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
 # Constants for the SideStore repository
 REPO_OWNER = 'khanhduytran0'
 REPO_NAME = 'LiveContainer'
-WORKFLOW_ID = 'nightly.yml'
+WORKFLOW_ID = 'build.yml'
 
 # Headers for authentication
 headers = {

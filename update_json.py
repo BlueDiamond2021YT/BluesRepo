@@ -19,6 +19,7 @@ headers = {
 }
 
 def extract_icon_and_metadata(ipa_path, app_name):
+    print(f"Extracting icon and metadata from {ipa_path} for app: {app_name}")
     with zipfile.ZipFile(ipa_path, 'r') as z:
         payload_path = [name for name in z.namelist() if name.startswith('Payload/') and name.endswith('.app/')][0]
         
@@ -32,8 +33,11 @@ def extract_icon_and_metadata(ipa_path, app_name):
             icon_path = icons_dir / f"{app_name}_icon.png"
             with open(icon_path, 'wb') as icon_file:
                 icon_file.write(icon_data)
-        
-        # Extract entitlements
+            print(f"Extracted icon saved to: {icon_path}")
+        else:
+            print(f"No app icons found for {app_name}.")
+
+        # Extract entitlements and permissions
         entitlements = [name for name in z.namelist() if payload_path in name and 'Entitlements.plist' in name]
         permissions = {}
         
@@ -42,17 +46,24 @@ def extract_icon_and_metadata(ipa_path, app_name):
             entitlements_data = z.read(entitlements[0])
             entitlements_dict = plistlib.loads(entitlements_data)
             permissions['entitlements'] = list(entitlements_dict.keys())
-        
+            print(f"Extracted entitlements: {permissions['entitlements']}")
+        else:
+            print("No entitlements found.")
+
         # Read Info.plist for permissions
         info_plist_path = f"{payload_path}Info.plist"
         if info_plist_path in z.namelist():
             info_plist_data = z.read(info_plist_path)
             info_dict = plistlib.loads(info_plist_data)
             permissions['privacy'] = {key: value for key, value in info_dict.items() if "UsageDescription" in key}
+            print(f"Extracted privacy permissions: {permissions['privacy']}")
+        else:
+            print("No Info.plist found.")
 
         return str(icon_path), permissions
 
 def process_app(app_config):
+    print(f"Processing app configuration for {app_config['name']}")
     SOURCE_REPO_OWNER = app_config['repo_owner']
     SOURCE_REPO_NAME = app_config['repo_name']
     WORKFLOW_ID = app_config['workflow_id']
@@ -70,6 +81,7 @@ def process_app(app_config):
 
     try:
         latest_run = next(run for run in runs['workflow_runs'] if run['conclusion'] == 'success')
+        print(f"Latest successful run found: {latest_run['id']} with commit message: {latest_run['head_commit']['message']}")
     except StopIteration:
         print(f"No successful runs found for {app_config['name']}.")
         return None
@@ -95,6 +107,7 @@ def process_app(app_config):
 
     artifact = artifacts['artifacts'][0]
     artifact_url = artifact['archive_download_url']
+    print(f"Downloading artifact from URL: {artifact_url}")
 
     zip_response = requests.get(artifact_url, headers=headers)
     if zip_response.status_code != 200:
@@ -118,10 +131,10 @@ def process_app(app_config):
 
         with open(save_path, 'wb') as ipa_file:
             ipa_file.write(z.read(ipa_file_name))
+        
+        print(f"Saved IPA file to: {save_path}")
 
         icon_path, permissions = extract_icon_and_metadata(save_path, app_config['name'])
-
-    print(f"Extracted and saved IPA File for {app_config['name']}: {save_path}")
 
     download_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/downloads/{app_config['name']}/{os.path.basename(save_path)}"
 

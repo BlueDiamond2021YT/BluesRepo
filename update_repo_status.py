@@ -3,9 +3,12 @@ import requests
 import json
 from datetime import datetime
 
-# GitHub repository details
+# Get the GitHub token from environment variables
 GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
-CURRENT_REPO = os.environ.get('GITHUB_REPOSITORY') 
+
+# Get the current repository information dynamically
+CURRENT_REPO = os.environ.get('GITHUB_REPOSITORY')
+
 WORKFLOW_NAME = "refresh_repo.yml"  # The workflow to monitor
 
 def get_last_workflow_run():

@@ -82,10 +82,10 @@ def update_repo_status(action_status, modified_files):
         print("repo_status.json not found. Creating a new one.")
         status_info = {"news": []}
 
-    tint_color = "#C0392B" if action_status == "failure" else "#27AE60"  # Red for failure, green for success
+    tint_color = "#00FF00" if action_status == "failure" else "#FF0000"  # Red for failure, green for success
 
     caption = f"Workflow {'failed' if action_status == 'failure' else 'succeeded'}.\n"
-    caption += f"List of files modified by last action: {', '.join(modified_files)}"
+    caption += f"List of files modified by last action:\n {', '.join(modified_files)}"
 
     status_info["news"] = [
         {

@@ -60,7 +60,7 @@ def extract_error_message(log_content):
     error_messages = []
     
     for line in lines:
-        if "Error" in line or "Traceback" in line:  # Adjust this condition based on your log format
+        if "Error loading JSON file" in line or "Traceback" in line:  # Look for specific error patterns
             error_messages.append(line)
     
     return "\n".join(error_messages) if error_messages else "No specific error message found."

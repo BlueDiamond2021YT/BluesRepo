@@ -83,13 +83,12 @@ def update_repo_status(action_status, modified_files):
         status_info = {"news": []}
 
     tint_color = "#00FF00" if action_status == "failure" else "#FF0000"  # Red for failure, green for success
-
-    caption = f"Workflow {'failed' if action_status == 'failure' else 'succeeded'}.\n"
+    caption = f"Last repo refresh: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
     caption += f"List of files modified by last action:\n {', '.join(modified_files)}"
 
     status_info["news"] = [
         {
-            "title": f"Last repo refresh: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+            "title": f"Workflow {'Failed' if action_status == 'failure' else 'Succeeded'}.",
             "identifier": "repo_status",
             "caption": caption,
             "date": datetime.now().isoformat(),

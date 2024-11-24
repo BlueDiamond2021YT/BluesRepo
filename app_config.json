@@ -10,6 +10,10 @@
             "beta": false,
             "tintColor": "#0784FC",
             "category": "utilities"
+            "screenshots": [
+                "https://raw.githubusercontent.com/khanhduytran0/LiveContainer/main/screenshots/screenshot1.png",
+                "https://raw.githubusercontent.com/khanhduytran0/LiveContainer/main/screenshots/screenshot2.png"
+            ]
         },
         {
             "name": "LiveContainer Unstable",
@@ -21,6 +25,9 @@
             "beta": true,
             "tintColor": "#0784FC",
             "category": "utilities"
+            "screenshots": [
+                "https://raw.githubusercontent.com/hugeBlack/LiveContainer/main/screenshots/screenshot1.png"
+            ]
         }
     ]
 }

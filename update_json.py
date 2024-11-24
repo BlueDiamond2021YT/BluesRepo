@@ -138,6 +138,9 @@ def process_app(app_config):
 
     download_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/downloads/{app_config['name']}/{os.path.basename(save_path)}"
 
+    # Include screenshots from app config
+    screenshots_urls = app_config.get('screenshots', [])
+    
     return {
         "beta": app_config.get('beta', False),
         "name": app_config['name'],
@@ -152,7 +155,7 @@ def process_app(app_config):
         "tintColor": app_config.get('tintColor', ''),
         "category": app_config.get('category', ''),
         "size": os.path.getsize(save_path),
-        "screenshotURLs": [],
+        "screenshotURLs": screenshots_urls,  # Add screenshots here
         "appPermissions": permissions  # Directly use the extracted permissions
     }
 

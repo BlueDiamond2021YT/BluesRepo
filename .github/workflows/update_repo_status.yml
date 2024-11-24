@@ -2,7 +2,7 @@ name: Update Repo Status
 
 on:
   workflow_run:
-    workflows: ["Your Refresh Workflow Name"]  # Replace with the name of your existing workflow
+    workflows: ["refresh_repo.yml"]  # Replace with the name of your existing workflow
     types:
       - completed
 

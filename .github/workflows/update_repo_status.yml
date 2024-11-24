@@ -1,0 +1,34 @@
+name: Update Repo Status
+
+on:
+  workflow_run:
+    workflows: ["Your Refresh Workflow Name"]  # Replace with the name of your existing workflow
+    types:
+      - completed
+
+jobs:
+  update-status:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
+        run: pip install requests
+
+      - name: Run Update Script
+        run: python update_repo_status.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add repo_status.json
+          git commit -m "Update repo status"
+          git push origin HEAD:${{ github.ref }}

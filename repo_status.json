@@ -1,14 +1,14 @@
 {
   "name": "BluesRepo Status",
-  "identifier": "com.status.BluesSource.workflow",
+  "identifier": "com.status.BlueDiamondsRepo",
   "subtitle": "Status of BluesRepo",
   "description": "See the status of BluesRepo from Alt/SideStore!",
   "news": [
     {
-      "title": "Last repo refresh: 2024-11-24T14:30:00Z",  // ISO-8601 format date
+      "title": "Last repo refresh: 2024-11-24T14:30:00Z",
       "identifier": "repo_status",
-      "caption": "Workflow: Success\nList of files modified by last action: file1.json, file2.json",
-      "date": "2024-11-24T14:30:00Z",  // ISO-8601 format date
+      "caption": "Last Workflow Status: Success\nList of files modified by last action: file1.json, file2.json",
+      "date": "2024-11-24T14:30:00Z",
       "tintColor": "#F54F32"
     }
   ]

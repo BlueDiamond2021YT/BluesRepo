@@ -69,7 +69,7 @@ def get_screenshots(screenshots_directory):
     # Iterate through files in the specified directory
     for filename in os.listdir(screenshots_directory):
         if filename.endswith('.png'):
-            # Extract width, height, and screenshot number from filename
+            # Extract device type, dimensions, and screenshot number from filename
             parts = filename.split('-')
             
             if len(parts) >= 3:

@@ -3,6 +3,7 @@ import requests
 import json
 import zipfile
 import io
+from subprocess import run
 
 # Get the GitHub token from environment variables
 GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
@@ -88,14 +89,21 @@ def process_app(app_config):
         with open(save_path, 'wb') as ipa_file:
             ipa_file.write(z.read(ipa_file_name))
 
+        # Change bundle ID using iPA-Edit (if needed)
+        new_bundle_id = app_config.get('new_bundle_identifier')
+        if new_bundle_id:
+            modified_ipa_path = f"./downloads/{ipa_file_name[:-4]}-{version}-modified.ipa"
+            run(['python', 'ipaedit.py', '-i', save_path, '-o', modified_ipa_path, '-b', new_bundle_id])
+            save_path = modified_ipa_path
+
     print(f"Extracted and saved IPA File for {app_config['name']}: {save_path}")
 
     # Construct the download URL dynamically based on current repo info
-    download_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/downloads/{ipa_file_name[:-4]}-{version}.ipa"
+    download_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/downloads/{os.path.basename(save_path)}"
 
     return {
         "name": app_config['name'],
-        "bundleIdentifier": app_config['bundle_identifier'],
+        "bundleIdentifier": new_bundle_id or app_config['bundle_identifier'],
         "version": version,
         "versionDate": latest_run['created_at'].split('T')[0],
         "versionDescription": f"Latest build from {latest_run['name']}",
@@ -123,14 +131,14 @@ except (FileNotFoundError, ValueError) as e:
     print(f"Error loading JSON file: {e}")
     exit(1)
 
-# Update the apps in the JSON data
+# Update or add new apps in the JSON data
 for updated_app in updated_apps:
-    for app in data['apps']:
-        if app['bundleIdentifier'] == updated_app['bundleIdentifier']:
-            app.update(updated_app)
-            break
+    existing_app_index = next((index for (index, d) in enumerate(data['apps']) if d["bundleIdentifier"] == updated_app["bundleIdentifier"]), None)
+    
+    if existing_app_index is not None:
+        data['apps'][existing_app_index] = updated_app  # Update existing entry
     else:
-        data['apps'].append(updated_app)
+        data['apps'].append(updated_app)  # Add new entry
 
 # Save updated JSON file and print its contents to the console
 try:
@@ -138,6 +146,5 @@ try:
         json.dump(data, file, indent=4)
         print("Updated JSON content:")
         print(json.dumps(data, indent=4))
-        print("JSON file updated successfully.")
 except Exception as e:
     print(f"Error writing to JSON file: {e}")

@@ -2,6 +2,7 @@
     "apps": [
         {
             "name": "LiveContainer",
+            "localizedDescription": "MISSINGNO.",
             "repo_owner": "khanhduytran0",
             "repo_name": "LiveContainer",
             "workflow_id": "build.yml",
@@ -12,6 +13,7 @@
         },
         {
             "name": "LiveContainer Experimental",
+            "localizedDescription": "MISSINGNO."
             "repo_owner": "hugeBlack",
             "repo_name": "LiveContainer",
             "workflow_id": "build.yml",

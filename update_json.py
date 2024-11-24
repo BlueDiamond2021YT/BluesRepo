@@ -138,58 +138,72 @@ def process_app(app_config):
 
     download_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/downloads/{app_config['name']}/{os.path.basename(save_path)}"
 
-    # Include screenshots from app config
-    screenshots_urls = app_config.get('screenshots', [])
+    # Include screenshots from app config with device types and dimensions
+    screenshots_info = app_config.get('screenshots', {})
     
-    return {
-        "beta": app_config.get('beta', False),
-        "name": app_config['name'],
-        "bundleIdentifier": app_config['bundle_identifier'],
-        "developerName": SOURCE_REPO_OWNER,
-        "version": version,
-        "versionDate": latest_run['created_at'].split('T')[0],
-        "versionDescription": commit_message,
-        "downloadURL": download_url,
-        "iconURL": f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/resources/icons/{os.path.basename(icon_path)}",
-        "localizedDescription": app_config.get('localizedDescription', ''),
-        "tintColor": app_config.get('tintColor', ''),
-        "category": app_config.get('category', ''),
-        "size": os.path.getsize(save_path),
-        "screenshotURLs": screenshots_urls,  # Add screenshots here
-        "appPermissions": permissions  # Directly use the extracted permissions
-    }
+    # Prepare screenshot data based on available device types
+    screenshots_output = {}
+    
+    if 'iphone' in screenshots_info:
+         screenshots_output["iphone"] = screenshots_info["iphone"]
+         print("iPhone screenshots added.")
+         
+     if 'ipad' in screenshots_info:
+         screenshots_output["ipad"] = screenshots_info["ipad"]
+         print("iPad screenshots added.")
+
+     return {
+         "beta": app_config.get('beta', False),
+         "name": app_config['name'],
+         "bundleIdentifier": app_config['bundle_identifier'],
+         "developerName": SOURCE_REPO_OWNER,
+         "version": version,
+         "versionDate": latest_run['created_at'].split('T')[0],
+         "versionDescription": commit_message,
+         "downloadURL": download_url,
+         "iconURL": f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/resources/icons/{os.path.basename(icon_path)}",
+         "localizedDescription": app_config.get('localizedDescription', ''),
+         "tintColor": app_config.get('tintColor', ''),
+         "category": app_config.get('category', ''),
+         "size": os.path.getsize(save_path),
+         
+         # Add screenshots with device type information; only include available types.
+         **screenshots**: screenshots_output,
+         
+         **appPermissions**: permissions  # Directly use the extracted permissions
+     }
 
 with open('app_config.json', 'r') as config_file:
-    app_configs = json.load(config_file)['apps']
+     app_configs = json.load(config_file)['apps']
 
 updated_apps = []
 for app_config in app_configs:
-    app_data = process_app(app_config)
-    if app_data:
-        updated_apps.append(app_data)
+     app_data = process_app(app_config)
+     if app_data:
+         updated_apps.append(app_data)
 
 try:
-    with open('sidestore_repo.json', 'r') as file:
-        if os.stat('sidestore_repo.json').st_size == 0:
-            raise ValueError("JSON file is empty.")
-        data = json.load(file)
+     with open('sidestore_repo.json', 'r') as file:
+         if os.stat('sidestore_repo.json').st_size == 0:
+             raise ValueError("JSON file is empty.")
+         data = json.load(file)
 except (FileNotFoundError, ValueError) as e:
-    print(f"Error loading JSON file: {e}")
-    exit(1)
+     print(f"Error loading JSON file: {e}")
+     exit(1)
 
 for updated_app in updated_apps:
-    unique_key = (updated_app["name"], updated_app["bundleIdentifier"])
-    
-    existing_app_index = next((index for (index, d) in enumerate(data['apps']) 
-                               if (d["name"], d["bundleIdentifier"]) == unique_key), None)
-    
-    if existing_app_index is not None:
-        data['apps'][existing_app_index] = updated_app
-    else:
-        data['apps'].append(updated_app)
+     unique_key = (updated_app["name"], updated_app["bundleIdentifier"])
+     
+     existing_app_index = next((index for (index, d) in enumerate(data['apps']) 
+                                if (d["name"], d["bundleIdentifier"]) == unique_key), None)
+     
+     if existing_app_index is not None:
+         data['apps'][existing_app_index] = updated_app
+     else:
+         data['apps'].append(updated_app)
 
 try:
-    with open('sidestore_repo.json', 'w') as file:
-        json.dump(data, file, indent=4)
+     with open('sidestore_repo.json', 'w') as file:
+         json.dump(data, file, indent=4)
 except Exception as e:
-    print(f"Error writing to JSON file: {e}")
+     print(f"Error writing to JSON file: {e}")

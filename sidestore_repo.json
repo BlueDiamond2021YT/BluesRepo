@@ -25,26 +25,6 @@
         },
         {
             "beta": true,
-            "name": "LiveContainer Experimental",
-            "bundleIdentifier": "com.kdt.livecontainer.experimental",
-            "developerName": "hugeBlack",
-            "version": "2510ea5",
-            "versionDate": "2024-11-23",
-            "versionDescription": "fix app don't show up when signing failed",
-            "downloadURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/downloads/LiveContainer Experimental/com.kdt.livecontainer_3.1.0-2510ea5.ipa",
-            "iconURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/resources/icons/LiveContainer Experimental_icon.png",
-            "localizedDescription": "MISSINGNO.",
-            "tintColor": "#0784FC",
-            "category": "utilities",
-            "size": 2669244,
-            "screenshotURLs": [],
-            "appPermissions": {
-                "entitlements": [],
-                "privacy": {}
-            }
-        },
-        {
-            "beta": true,
             "name": "LiveContainer Unstable",
             "bundleIdentifier": "com.kdt.livecontainer.experimental",
             "developerName": "hugeBlack",

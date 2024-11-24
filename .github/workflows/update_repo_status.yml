@@ -2,23 +2,22 @@ name: Update Repo Status
 
 on:
   workflow_run:
-    workflows: ["Refresh AltStore repo JSON"]  # Replace with the name of your existing workflow
+    workflows: ["Refresh AltStore repo JSON"]
     types:
       - completed
+       
   workflow_dispatch:
 
 jobs:
   update-status:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-        
+        uses: actions/checkout@v3  # Use the latest stable version
+
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4  # Use the latest stable version
         with:
           python-version: '3.x'
 

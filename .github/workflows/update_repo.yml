@@ -26,6 +26,9 @@ jobs:
       - name: Install Dependencies
         run: pip install requests
 
+      - name: Enable Debug Logging
+        run: echo "ACTIONS_STEP_DEBUG=true" >> $GITHUB_ENV
+
       - name: Run Update Script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -53,3 +56,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: git push origin HEAD:${{ github.ref }}
+
+      - name: Upload JSON Artifact
+        if: always()  # Ensure this runs even if previous steps fail
+        uses: actions/upload-artifact@v3
+        with:
+          name: sidestore_repo_json_artifact
+          path: sidestore_repo.json

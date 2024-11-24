@@ -148,7 +148,7 @@ def process_app(app_config):
          screenshots_output["iphone"] = screenshots_info["iphone"]
          print("iPhone screenshots added.")
          
-     if 'ipad' in screenshots_info:
+    if 'ipad' in screenshots_info:
          screenshots_output["ipad"] = screenshots_info["ipad"]
          print("iPad screenshots added.")
 

@@ -61,5 +61,5 @@ jobs:
         if: always()  # Ensure this runs even if previous steps fail
         uses: actions/upload-artifact@v3
         with:
-          name: sidestore_repo_json_artifact
+          name: sidestore_repo.json
           path: sidestore_repo.json

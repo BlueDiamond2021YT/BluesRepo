@@ -6,7 +6,7 @@
         {
             "beta": true,
             "name": "LiveContainer",
-            "bundleIdentifier": "com.kdt.livecontainer",
+            "bundleIdentifier": "com.kdt.livecontainer.experimental",
             "developerName": "khanhduytran0",
             "version": "5d54a31",
             "versionDate": "2024-11-18",

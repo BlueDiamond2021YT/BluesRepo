@@ -10,21 +10,7 @@
             "beta": false,
             "tintColor": "#0784FC",
             "category": "utilities",
-            "screenshots": {
-                "deviceType": "iphone",
-                "images": [
-                    {
-                        "imageURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/resources/screenshots/LiveContainer/LiveContainerScreenshot1-iPhone13.png",
-                        "width": 1170,
-                        "height": 2532
-                    },
-                    {
-                        "imageURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/resources/screenshots/LiveContainer/LiveContainerScreenshot2-iPhone13.png",
-                        "width": 1170,
-                        "height": 2532
-                    }
-                ]
-            }
+            "screenshots_directory": "./resources/screenshots/LiveContainer/"
         },
         {
             "name": "LiveContainer Unstable",
@@ -36,21 +22,7 @@
             "beta": true,
             "tintColor": "#0784FC",
             "category": "utilities",
-            "screenshots": {
-                "deviceType": "iphone",
-                "images": [
-                    {
-                        "imageURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/resources/screenshots/LiveContainer/LiveContainerScreenshot1-iPhone13.png",
-                        "width": 1170,
-                        "height": 2532
-                    },
-                    {
-                        "imageURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/resources/screenshots/LiveContainer/LiveContainerScreenshot2-iPhone13.png",
-                        "width": 1170,
-                        "height": 2532
-                    }
-                ]
-            }
+            "screenshots_directory": "./resources/screenshots/LiveContainer/"
         }
     ]
 }

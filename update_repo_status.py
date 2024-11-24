@@ -82,8 +82,8 @@ def update_repo_status(action_status, modified_files):
         print("repo_status.json not found. Creating a new one.")
         status_info = {"news": []}
 
-    tint_color = "#00FF00" if action_status == "failure" else "#FF0000"  # Red for failure, green for success
-    caption = f{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+    tint_color = "#FF0000" if action_status == "failure" else "#00AA00"  # Red for failure, green for success
+    caption = f"Last repo refresh: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
     caption += f"Last modifed files:\n {', '.join(modified_files)}"
 
     status_info["news"] = [

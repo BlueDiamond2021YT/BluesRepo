@@ -152,7 +152,7 @@ def process_app(app_config):
          screenshots_output["ipad"] = screenshots_info["ipad"]
          print("iPad screenshots added.")
 
-     return {
+     return
          "beta": app_config.get('beta', False),
          "name": app_config['name'],
          "bundleIdentifier": app_config['bundle_identifier'],
@@ -171,7 +171,7 @@ def process_app(app_config):
          **screenshots**: screenshots_output,
          
          **appPermissions**: permissions  # Directly use the extracted permissions
-     }
+     
 
 with open('app_config.json', 'r') as config_file:
      app_configs = json.load(config_file)['apps']

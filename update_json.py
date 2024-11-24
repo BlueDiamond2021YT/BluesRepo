@@ -65,7 +65,9 @@ def process_app(app_config):
         return None
 
     run_id = latest_run['id']
-
+    
+    commit_message = latest_run['head_commit']['message'] if 'head_commit' in latest_run else "No commit message."
+    
     artifacts_response = requests.get(
         f'https://api.github.com/repos/{SOURCE_REPO_OWNER}/{SOURCE_REPO_NAME}/actions/runs/{run_id}/artifacts',
         headers=headers
@@ -120,7 +122,7 @@ def process_app(app_config):
         "developerName": SOURCE_REPO_OWNER,
         "version": version,
         "versionDate": latest_run['created_at'].split('T')[0],
-        "versionDescription": f"Latest build from {latest_run['name']}",
+        "versionDescription": commit_message,
         "downloadURL": download_url,
         "iconURL": f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/resources/icons/{os.path.basename(icon_path)}",
         "localizedDescription": "Run iOS app without actually installing it!",

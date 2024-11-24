@@ -5,10 +5,10 @@
     "description": "See the status of BluesRepo from Alt/SideStore!",
     "news": [
         {
-            "title": "Last repo refresh: 2024-11-24 21:50:07",
+            "title": "Last repo refresh: 2024-11-24 21:53:00",
             "identifier": "repo_status",
             "caption": "Workflow failed. Error: No specific error message found.",
-            "date": "2024-11-24T21:50:07.479932",
+            "date": "2024-11-24T21:53:00.555798",
             "tintColor": "#C0392B"
         }
     ]

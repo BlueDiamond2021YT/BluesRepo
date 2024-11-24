@@ -17,7 +17,18 @@
             "tintColor": "#0784FC",
             "category": "utilities",
             "size": 905494,
-            "screenshots": [],
+            "screenshots": [
+                {
+                    "imageURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/./resources/screenshots/LiveContainer//iphone-1170x2532-2.png",
+                    "width": 1170,
+                    "height": 2532
+                },
+                {
+                    "imageURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/./resources/screenshots/LiveContainer//iphone-1170x2532-1.png",
+                    "width": 1170,
+                    "height": 2532
+                }
+            ],
             "appPermissions": {
                 "privacy": {
                     "NSBluetoothAlwaysUsageDescription": "The guest app is requesting for this permission.",
@@ -69,7 +80,18 @@
             "tintColor": "#0784FC",
             "category": "utilities",
             "size": 2669244,
-            "screenshots": [],
+            "screenshots": [
+                {
+                    "imageURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/./resources/screenshots/LiveContainer//iphone-1170x2532-2.png",
+                    "width": 1170,
+                    "height": 2532
+                },
+                {
+                    "imageURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/./resources/screenshots/LiveContainer//iphone-1170x2532-1.png",
+                    "width": 1170,
+                    "height": 2532
+                }
+            ],
             "appPermissions": {
                 "privacy": {
                     "NSBluetoothAlwaysUsageDescription": "The guest app is requesting for this permission.",

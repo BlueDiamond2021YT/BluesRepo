@@ -6,15 +6,19 @@
             "repo_name": "LiveContainer",
             "workflow_id": "build.yml",
             "bundle_identifier": "com.kdt.livecontainer",
-            "beta": false
+            "beta": false,
+            "tintColor": "#0784FC",
+            "category": "utilities"
         },
         {
             "name": "LiveContainer Experimental",
             "repo_owner": "hugeBlack",
             "repo_name": "LiveContainer",
             "workflow_id": "build.yml",
-            "bundle_identifier": "com.kdt.livecontainer.experimental"
-            "beta": true
+            "bundle_identifier": "com.kdt.livecontainer.experimental",
+            "beta": true,
+            "tintColor": "#0784FC",
+            "category": "utilities"
         }
     ]
 }

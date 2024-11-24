@@ -1,6 +1,7 @@
 import os
 import requests
 import json
+import re
 from datetime import datetime
 
 # Get the GitHub token from environment variables
@@ -57,11 +58,13 @@ def fetch_workflow_log(log_url):
 def extract_error_message(log_content):
     """Extracts a meaningful error message from the log content."""
     lines = log_content.splitlines()
+    
+    # Look for lines that indicate an error using regex patterns
     error_messages = []
     
     for line in lines:
-        if "Error loading JSON file" in line or "Traceback" in line:  # Look for specific error patterns
-            error_messages.append(line)
+        if re.search(r'Error loading JSON file|Traceback|Exception', line):
+            error_messages.append(line.strip())
     
     return "\n".join(error_messages) if error_messages else "No specific error message found."
 

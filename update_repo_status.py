@@ -5,12 +5,11 @@ from datetime import datetime
 
 # GitHub repository details
 GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')  # Your GitHub token
-REPO_OWNER = "BlueDiamond2021YT"  # Replace with your repo owner
-REPO_NAME = "BluesRepo"  # Replace with your repo name
+CURRENT_REPO = os.environ.get('GITHUB_REPOSITORY') your repo name
 WORKFLOW_NAME = "refresh_repo.yml"  # The workflow to monitor
 
 def get_last_workflow_run():
-    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/actions/workflows/{WORKFLOW_NAME}/runs"
+    url = f"https://api.github.com/repos/{GITHUB_REPOSITORY}/actions/workflows/{WORKFLOW_NAME}/runs"
     headers = {
         'Authorization': f'token {GITHUB_TOKEN}',
         'Accept': 'application/vnd.github.v3+json'

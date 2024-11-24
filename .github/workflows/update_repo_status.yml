@@ -5,6 +5,7 @@ on:
     workflows: ["Refresh AltStore repo JSON"]  # Replace with the name of your existing workflow
     types:
       - completed
+  workflow_dispatch:
 
 jobs:
   update-status:

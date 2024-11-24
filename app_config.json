@@ -2,18 +2,18 @@
     "apps": [
         {
             "name": "LiveContainer",
-            "localizedDescription": "MISSINGNO.",
+            "localizedDescription": "Run iOS app without actually installing it!",
             "repo_owner": "khanhduytran0",
             "repo_name": "LiveContainer",
             "workflow_id": "build.yml",
             "bundle_identifier": "com.kdt.livecontainer",
             "beta": false,
-            "tintColor": "#0784FC",
+            "tintColor": "#0784FC"
             "category": "utilities"
         },
         {
-            "name": "LiveContainer Experimental",
-            "localizedDescription": "MISSINGNO.",
+            "name": "LiveContainer Unstable",
+            "localizedDescription": "Run iOS app without actually installing it! This build contains experimental features that may not be stable and may be merged to upstream in the future.",
             "repo_owner": "hugeBlack",
             "repo_name": "LiveContainer",
             "workflow_id": "build.yml",

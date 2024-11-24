@@ -79,19 +79,17 @@ def get_screenshots(screenshots_directory):
                 width, height = dimensions.split('x')
                 image_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/{screenshots_directory.replace('./', '')}{filename}"
                 
-                # Construct screenshot entry based on device type
-                screenshot_entry = {
+                screenshots.append({
                     "imageURL": image_url,
-                }
-                
-                # Include width and height only for the first image of each type (if needed)
-                if len(screenshots) == 0:  # Only add width and height for the first screenshot found
-                    screenshot_entry["width"] = int(width)
-                    screenshot_entry["height"] = int(height)
-
-                screenshots.append(screenshot_entry)
+                })
                 print(f"Found screenshot: {image_url} with dimensions ({width}, {height})")
     
+    # If there are any screenshots, add width and height to the last one only
+    if screenshots:
+        last_screenshot_index = len(screenshots) - 1
+        screenshots[last_screenshot_index]["width"] = int(width)
+        screenshots[last_screenshot_index]["height"] = int(height)
+
     return screenshots
 
 def process_app(app_config):

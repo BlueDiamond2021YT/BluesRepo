@@ -40,6 +40,21 @@ def get_last_workflow_run():
         "id": latest_run["id"]                   # ID of the run to fetch details
     }
 
+def fetch_workflow_log(log_url):
+    # Fetch the logs from the URL provided
+    headers = {
+        'Authorization': f'token {GITHUB_TOKEN}',  # Use PAT for authentication
+        'Accept': 'application/vnd.github.v3+json'
+    }
+    
+    response = requests.get(log_url, headers=headers)
+    
+    if response.status_code != 200:
+        print(f"Failed to fetch workflow logs: {response.status_code} - {response.text}")
+        return "Unable to retrieve logs."
+    
+    return response.text  # Return the log content as a string
+
 def fetch_modified_files():
     url = f"https://api.github.com/repos/{CURRENT_REPO}/commits?per_page=1"
     headers = {
@@ -86,7 +101,7 @@ def update_repo_status(action_status, modified_files):
 
     # Format the news entry based on action status
     if action_status == "failure":
-        caption = f"Workflow failed. Please check for errors."  # Placeholder for error message
+        caption = "Workflow failed. Please check for errors."  # Placeholder for error message
     else:
         caption = f"Workflow succeeded.\nList of files modified by last action: {', '.join(modified_files)}"
 
@@ -116,11 +131,12 @@ if __name__ == "__main__":
         modified_files = fetch_modified_files()  # Fetch modified files
         
         if action_status == "failure":
-            log_content = fetch_workflow_log(last_run_info["log_url"])  # Optionally fetch logs on failure
+            log_content = fetch_workflow_log(last_run_info["log_url"])  # Fetch logs on failure
             
             error_message = log_content.splitlines()[-1] if log_content else "No error message available."  # Get last line as error message
             
             update_repo_status(action_status, [], error_message)  # Pass empty list for modified files when fetching logs fails or on failure
+            
             print(f"Error from workflow: {error_message}")  # Print error message
             
         else:

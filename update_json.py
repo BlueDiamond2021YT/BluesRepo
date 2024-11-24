@@ -4,6 +4,7 @@ import json
 import zipfile
 import io
 from pathlib import Path
+import plistlib
 
 # Get the GitHub token from environment variables
 GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
@@ -20,10 +21,9 @@ headers = {
 def extract_icon_and_metadata(ipa_path, app_name):
     with zipfile.ZipFile(ipa_path, 'r') as z:
         payload_path = [name for name in z.namelist() if name.startswith('Payload/') and name.endswith('.app/')][0]
-        app_icons = [name for name in z.namelist() if payload_path in name and 'AppIcon' in name and name.endswith('.png')]
-        entitlements = [name for name in z.namelist() if payload_path in name and 'Entitlements.plist' in name]
         
-        # Extract the largest icon
+        # Extract icons
+        app_icons = [name for name in z.namelist() if payload_path in name and 'AppIcon' in name and name.endswith('.png')]
         if app_icons:
             largest_icon = max(app_icons, key=lambda x: int(x.split('@')[1].split('x')[0]) if '@' in x else 1)
             icon_data = z.read(largest_icon)
@@ -33,13 +33,23 @@ def extract_icon_and_metadata(ipa_path, app_name):
             with open(icon_path, 'wb') as icon_file:
                 icon_file.write(icon_data)
         
-        # Extract entitlements (if any)
-        permissions = []
+        # Extract entitlements
+        entitlements = [name for name in z.namelist() if payload_path in name and 'Entitlements.plist' in name]
+        permissions = {}
+        
+        # Read entitlements if available
         if entitlements:
             entitlements_data = z.read(entitlements[0])
-            # Assuming plistlib or similar is used to parse entitlements data
-            # permissions = parse_entitlements(entitlements_data)
+            entitlements_dict = plistlib.loads(entitlements_data)
+            permissions['entitlements'] = list(entitlements_dict.keys())
         
+        # Read Info.plist for permissions
+        info_plist_path = f"{payload_path}Info.plist"
+        if info_plist_path in z.namelist():
+            info_plist_data = z.read(info_plist_path)
+            info_dict = plistlib.loads(info_plist_data)
+            permissions['privacy'] = {key: value for key, value in info_dict.items() if "UsageDescription" in key}
+
         return str(icon_path), permissions
 
 def process_app(app_config):
@@ -116,7 +126,7 @@ def process_app(app_config):
     download_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/downloads/{app_config['name']}/{os.path.basename(save_path)}"
 
     return {
-        "beta": app_config['beta'],
+        "beta": app_config.get('beta', False),
         "name": app_config['name'],
         "bundleIdentifier": app_config['bundle_identifier'],
         "developerName": SOURCE_REPO_OWNER,
@@ -125,15 +135,12 @@ def process_app(app_config):
         "versionDescription": commit_message,
         "downloadURL": download_url,
         "iconURL": f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/resources/icons/{os.path.basename(icon_path)}",
-        "localizedDescription": app_config['localizedDescription'],
-        "tintColor": app_config['tintColor'],
-        "category": app_config['category'],
+        "localizedDescription": app_config.get('localizedDescription', ''),
+        "tintColor": app_config.get('tintColor', ''),
+        "category": app_config.get('category', ''),
         "size": os.path.getsize(save_path),
         "screenshotURLs": [],
-        "appPermissions": {
-            "entitlements": permissions,
-            "privacy": {}
-        }
+        "appPermissions": permissions  # Directly use the extracted permissions
     }
 
 with open('app_config.json', 'r') as config_file:

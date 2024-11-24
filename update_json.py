@@ -78,7 +78,7 @@ def get_screenshots(screenshots_directory):
                 screenshot_number = parts[2].split('.')[0]  # e.g., 1 or 2
                 
                 width, height = dimensions.split('x')
-                image_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/{screenshots_directory}/{filename}"
+                image_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/{screenshots_directory.replace('./', '')}{filename}"
                 
                 screenshots.append({
                     "imageURL": image_url,

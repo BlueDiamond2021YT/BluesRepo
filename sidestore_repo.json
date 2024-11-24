@@ -17,19 +17,29 @@
             "tintColor": "#0784FC",
             "category": "utilities",
             "size": 905494,
-            "screenshots": [
-                "ipad": [
-               {
-                  "imageURL": "https://example.com/ipad_portrait.png",
-                  "width": 1668,
-                  "height": 2388
-               },
-               {
-                  "imageURL": "https://altstore.io/ipad_landscape",
-                  "width": 2388,
-                  "height": 1668
-               }
-            ],
+"screenshots": {
+    "iphone": [
+        "https://example.com/iphone_portrait_1.png",
+        "https://example.com/iphone_portrait_2.png",
+        {
+            "imageURL": "https://example.com/iphone_landscape.png",
+            "width": 2556,
+            "height": 1179
+        }
+    ],
+    "ipad": [
+        {
+            "imageURL": "https://example.com/ipad_portrait.png",
+            "width": 1668,
+            "height": 2388
+        },
+        {
+            "imageURL": "https://altstore.io/ipad_landscape",
+            "width": 2388,
+            "height": 1668
+        }
+    ]
+}
             "appPermissions": {
                 "privacy": {
                     "NSBluetoothAlwaysUsageDescription": "The guest app is requesting for this permission.",

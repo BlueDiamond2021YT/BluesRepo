@@ -2,7 +2,7 @@ name: Update Repo Status
 
 on:
   workflow_run:
-    workflows: ["refresh_repo"]  # Replace with the name of your existing workflow
+    workflows: ["Refresh AltStore repo JSON"]  # Replace with the name of your existing workflow
     types:
       - completed
 

@@ -1,6 +1,6 @@
 {
-    "name": "Github Workflow Builds",
-    "identifier": "com.BluesSource.workflow",
+    "name": BluesRepo",
+    "identifier": "com.BlueDiamonds.repo",
     "sourceURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/sidestore_repo.json",
     "apps": [
         {

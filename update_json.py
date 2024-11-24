@@ -5,6 +5,7 @@ import zipfile
 import io
 from pathlib import Path
 import plistlib
+import subprocess
 
 # Get the GitHub token from environment variables
 GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
@@ -33,18 +34,20 @@ def extract_icon_and_metadata(ipa_path, app_name):
             with open(icon_path, 'wb') as icon_file:
                 icon_file.write(icon_data)
         
-        # Extract entitlements
-        entitlements = [name for name in z.namelist() if payload_path in name and 'Entitlements.plist' in name]
-        permissions = {}
+        # Extract entitlements from the binary
+        binary_path = f"{payload_path}/{app_name}.app/{app_name}"  # Adjust based on your app's naming convention
+        entitlements_command = f"codesign -d --entitlements :- {binary_path}"
         
-        # Read entitlements if available
-        if entitlements:
-            entitlements_data = z.read(entitlements[0])
-            entitlements_dict = plistlib.loads(entitlements_data)
-            permissions['entitlements'] = list(entitlements_dict.keys())
-        
+        try:
+            entitlements_output = subprocess.check_output(entitlements_command, shell=True).decode('utf-8')
+            entitlements_dict = plistlib.loads(entitlements_output.encode('utf-8'))
+            permissions = {'entitlements': list(entitlements_dict.keys())}
+        except subprocess.CalledProcessError as e:
+            print(f"Failed to extract entitlements: {e}")
+            permissions = {'entitlements': []}
+
         # Read Info.plist for permissions
-        info_plist_path = f"{payload_path}Info.plist"
+        info_plist_path = f"{payload_path}/Info.plist"
         if info_plist_path in z.namelist():
             info_plist_data = z.read(info_plist_path)
             info_dict = plistlib.loads(info_plist_data)

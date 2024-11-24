@@ -41,7 +41,6 @@ def get_last_workflow_run():
     }
 
 def fetch_workflow_log(log_url):
-    # Fetch the logs from the URL provided
     headers = {
         'Authorization': f'token {GITHUB_TOKEN}',  # Use PAT for authentication
         'Accept': 'application/vnd.github.v3+json'
@@ -73,7 +72,6 @@ def fetch_modified_files():
     if not commits:
         return []
     
-    # Get the files changed in the latest commit
     commit_sha = commits[0]['sha']
     files_url = f"https://api.github.com/repos/{CURRENT_REPO}/commits/{commit_sha}"
     
@@ -87,8 +85,7 @@ def fetch_modified_files():
     
     return [file['filename'] for file in changed_files]
 
-def update_repo_status(action_status, modified_files):
-    # Load existing status info if it exists
+def update_repo_status(action_status, modified_files, error_message=None):
     try:
         with open('repo_status.json', 'r') as json_file:
             status_info = json.load(json_file)
@@ -96,27 +93,23 @@ def update_repo_status(action_status, modified_files):
         print("repo_status.json not found. Exiting.")
         return
 
-    # Determine background color based on status
-    tint_color = "#C0392B" if action_status == "failure" else "#27AE60"  # Darker red for failure, darker green for success
+    tint_color = "#C0392B" if action_status == "failure" else "#27AE60"
 
-    # Format the news entry based on action status
     if action_status == "failure":
-        caption = "Workflow failed. Please check for errors."  # Placeholder for error message
+        caption = f"Workflow failed. Error: {error_message}"  # Include error message on failure
     else:
         caption = f"Workflow succeeded.\nList of files modified by last action: {', '.join(modified_files)}"
 
-    # Update only the news entry
     status_info["news"] = [
         {
-            "title": f"Last repo refresh: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",  # Human-readable format
+            "title": f"Last repo refresh: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
             "identifier": "repo_status",
             "caption": caption,
-            "date": datetime.now().isoformat(),  # ISO-8601 format for internal use
+            "date": datetime.now().isoformat(),
             "tintColor": tint_color
         }
     ]
 
-    # Write updated status back to repo_status.json
     with open('repo_status.json', 'w') as json_file:
         json.dump(status_info, json_file, indent=4)
     
@@ -133,11 +126,11 @@ if __name__ == "__main__":
         if action_status == "failure":
             log_content = fetch_workflow_log(last_run_info["log_url"])  # Fetch logs on failure
             
-            error_message = log_content.splitlines()[-1] if log_content else "No error message available."  # Get last line as error message
+            error_message = log_content.splitlines()[-1] if log_content else "No error message available."  
             
-            update_repo_status(action_status, [], error_message)  # Pass empty list for modified files when fetching logs fails or on failure
+            update_repo_status(action_status, [], error_message)  # Pass empty list for modified files and include error message
             
-            print(f"Error from workflow: {error_message}")  # Print error message
+            print(f"Error from workflow: {error_message}")  
             
         else:
             update_repo_status(action_status, modified_files)  # Update with modified files on success

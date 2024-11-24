@@ -23,8 +23,10 @@ jobs:
 
       - name: Install Dependencies
         run: pip install requests
-
+      
       - name: Run Update Script
+        env:
+            MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN}}
         run: python update_repo_status.py
 
       - name: Commit and Push Changes

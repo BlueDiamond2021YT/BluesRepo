@@ -143,7 +143,7 @@ def process_app(app_config):
     
     device_type = screenshots_info.get('deviceType', 'unknown')
     
-    # Prepare screenshots based on device type information.
+    # Prepare images based on the provided structure.
     images_info = screenshots_info.get('images', [])
     
     return {
@@ -162,12 +162,12 @@ def process_app(app_config):
          "size": os.path.getsize(save_path),
          
          # Add screenshots with device type information.
-         **screenshots**: {
-             **deviceType**: device_type,
-             **images**: images_info,
+         "screenshots": {
+             "deviceType": device_type,
+             "images": images_info,
          },
          
-         **appPermissions**: permissions  # Directly use the extracted permissions
+         "appPermissions": permissions  # Directly use the extracted permissions
      }
 
 with open('app_config.json', 'r') as config_file:

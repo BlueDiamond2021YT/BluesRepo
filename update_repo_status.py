@@ -36,25 +36,43 @@ def get_last_workflow_run():
     return {
         "status": latest_run["conclusion"],  # Success or Failure
         "date": latest_run["created_at"],      # ISO-8601 format date
-        "log_url": latest_run["logs_url"]      # URL to fetch the logs
+        "log_url": latest_run["logs_url"],      # URL to fetch the logs
+        "id": latest_run["id"]                   # ID of the run to fetch details
     }
 
-def fetch_workflow_log(log_url):
-    # Fetch the logs from the URL provided
+def fetch_modified_files():
+    url = f"https://api.github.com/repos/{CURRENT_REPO}/commits?per_page=1"
     headers = {
         'Authorization': f'token {GITHUB_TOKEN}',  # Use PAT for authentication
         'Accept': 'application/vnd.github.v3+json'
     }
     
-    response = requests.get(log_url, headers=headers)
+    response = requests.get(url, headers=headers)
     
     if response.status_code != 200:
-        print(f"Failed to fetch workflow logs: {response.status_code} - {response.text}")
-        return "Unable to retrieve logs."
+        print(f"Failed to fetch commits: {response.status_code} - {response.text}")
+        return []
     
-    return response.text  # Return the log content as a string
+    commits = response.json()
+    
+    if not commits:
+        return []
+    
+    # Get the files changed in the latest commit
+    commit_sha = commits[0]['sha']
+    files_url = f"https://api.github.com/repos/{CURRENT_REPO}/commits/{commit_sha}"
+    
+    files_response = requests.get(files_url, headers=headers)
+    
+    if files_response.status_code != 200:
+        print(f"Failed to fetch commit details: {files_response.status_code} - {files_response.text}")
+        return []
+    
+    changed_files = files_response.json().get('files', [])
+    
+    return [file['filename'] for file in changed_files]
 
-def update_repo_status(action_status, modified_files, log_content):
+def update_repo_status(action_status, modified_files):
     # Load existing status info if it exists
     try:
         with open('repo_status.json', 'r') as json_file:
@@ -68,9 +86,9 @@ def update_repo_status(action_status, modified_files, log_content):
 
     # Format the news entry based on action status
     if action_status == "failure":
-        caption = f"Workflow: {action_status}\nLog:\n{log_content}"  # Use log content on failure
+        caption = f"Workflow failed. Please check for errors."  # Placeholder for error message
     else:
-        caption = f"Workflow: {action_status}\nList of files modified by last action: {', '.join(modified_files)}"
+        caption = f"Workflow succeeded.\nList of files modified by last action: {', '.join(modified_files)}"
 
     # Update only the news entry
     status_info["news"] = [
@@ -95,6 +113,15 @@ if __name__ == "__main__":
     if last_run_info:
         action_status = last_run_info["status"]
         
-        log_content = fetch_workflow_log(last_run_info["log_url"])
+        modified_files = fetch_modified_files()  # Fetch modified files
         
-        update_repo_status(action_status, [], log_content)  # Pass empty list for modified files when fetching logs fails or on failure
+        if action_status == "failure":
+            log_content = fetch_workflow_log(last_run_info["log_url"])  # Optionally fetch logs on failure
+            
+            error_message = log_content.splitlines()[-1] if log_content else "No error message available."  # Get last line as error message
+            
+            update_repo_status(action_status, [], error_message)  # Pass empty list for modified files when fetching logs fails or on failure
+            print(f"Error from workflow: {error_message}")  # Print error message
+            
+        else:
+            update_repo_status(action_status, modified_files)  # Update with modified files on success

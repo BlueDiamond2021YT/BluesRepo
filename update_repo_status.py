@@ -54,6 +54,17 @@ def fetch_workflow_log(log_url):
     
     return response.text  # Return the log content as a string
 
+def extract_error_message(log_content):
+    """Extracts a meaningful error message from the log content."""
+    lines = log_content.splitlines()
+    error_messages = []
+    
+    for line in lines:
+        if "Error" in line or "Traceback" in line:  # Adjust this condition based on your log format
+            error_messages.append(line)
+    
+    return "\n".join(error_messages) if error_messages else "No specific error message found."
+
 def fetch_modified_files():
     url = f"https://api.github.com/repos/{CURRENT_REPO}/commits?per_page=1"
     headers = {
@@ -126,7 +137,7 @@ if __name__ == "__main__":
         if action_status == "failure":
             log_content = fetch_workflow_log(last_run_info["log_url"])  # Fetch logs on failure
             
-            error_message = log_content.splitlines()[-1] if log_content else "No error message available."  
+            error_message = extract_error_message(log_content)  # Extract meaningful error message
             
             update_repo_status(action_status, [], error_message)  # Pass empty list for modified files and include error message
             

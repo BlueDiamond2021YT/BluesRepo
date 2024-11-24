@@ -3,25 +3,21 @@ import requests
 import json
 from datetime import datetime
 
-# Get the GitHub token from environment variables
-GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
-
 # Get the current repository information dynamically
-CURRENT_REPO = os.environ.get('GITHUB_REPOSITORY')
+CURRENT_REPO = os.environ.get('GITHUB_REPOSITORY')  # Should be in the format "owner/repo"
 
 WORKFLOW_NAME = "refresh_repo.yml"  # The workflow to monitor
 
 def get_last_workflow_run():
     url = f"https://api.github.com/repos/{CURRENT_REPO}/actions/workflows/{WORKFLOW_NAME}/runs"
     headers = {
-        'Authorization': f'token {GITHUB_TOKEN}',
         'Accept': 'application/vnd.github.v3+json'
     }
     
     response = requests.get(url, headers=headers)
     
     if response.status_code != 200:
-        print(f"Failed to fetch workflow runs: {response.status_code}")
+        print(f"Failed to fetch workflow runs: {response.status_code} - {response.text}")
         return None
     
     runs = response.json()
@@ -40,22 +36,29 @@ def get_last_workflow_run():
     }
 
 def update_repo_status(action_status, modified_files):
-    # Define the status information
-    status_info = {
-        "news": [
-            {
-                "title": f"Last repo refresh: {datetime.now().isoformat()}",
-                "identifier": "repo_status",
-                "caption": f"Workflow: {action_status}\nList of files modified by last action: {', '.join(modified_files)}",
-                "date": datetime.now().isoformat(),
-                "tintColor": "#F54F32"
-            }
-        ]
-    }
+    # Load existing status info if it exists
+    try:
+        with open('repo_status.json', 'r') as json_file:
+            status_info = json.load(json_file)
+    except FileNotFoundError:
+        print("repo_status.json not found. Exiting.")
+        return
 
-    # Write to repo_status.json
+    # Update only the news entry
+    status_info["news"] = [
+        {
+            "title": f"Last repo refresh: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",  # Human-readable format
+            "identifier": "repo_status",
+            "caption": f"Workflow: {action_status}\nList of files modified by last action: {', '.join(modified_files)}",
+            "date": datetime.now().isoformat(),  # ISO-8601 format for internal use
+            "tintColor": "#F54F32"
+        }
+    ]
+
+    # Write updated status back to repo_status.json
     with open('repo_status.json', 'w') as json_file:
         json.dump(status_info, json_file, indent=4)
+    
     print("repo_status.json updated successfully.")
 
 if __name__ == "__main__":

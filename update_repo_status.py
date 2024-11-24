@@ -3,6 +3,9 @@ import requests
 import json
 from datetime import datetime
 
+# Get the GitHub token from environment variables
+GITHUB_TOKEN = os.environ.get('MY_GITHUB_TOKEN')  # Use your personal access token
+
 # Get the current repository information dynamically
 CURRENT_REPO = os.environ.get('GITHUB_REPOSITORY')  # Should be in the format "owner/repo"
 
@@ -11,6 +14,7 @@ WORKFLOW_NAME = "refresh_repo.yml"  # The workflow to monitor
 def get_last_workflow_run():
     url = f"https://api.github.com/repos/{CURRENT_REPO}/actions/workflows/{WORKFLOW_NAME}/runs"
     headers = {
+        'Authorization': f'token {GITHUB_TOKEN}',  # Use PAT for authentication
         'Accept': 'application/vnd.github.v3+json'
     }
     
@@ -32,12 +36,17 @@ def get_last_workflow_run():
     return {
         "status": latest_run["conclusion"],  # Success or Failure
         "date": latest_run["created_at"],      # ISO-8601 format date
-        "log_url": latest_run["logs_url"]  # URL to fetch the logs
+        "log_url": latest_run["logs_url"]      # URL to fetch the logs
     }
 
 def fetch_workflow_log(log_url):
     # Fetch the logs from the URL provided
-    response = requests.get(log_url)
+    headers = {
+        'Authorization': f'token {GITHUB_TOKEN}',  # Use PAT for authentication
+        'Accept': 'application/vnd.github.v3+json'
+    }
+    
+    response = requests.get(log_url, headers=headers)
     
     if response.status_code != 200:
         print(f"Failed to fetch workflow logs: {response.status_code} - {response.text}")
@@ -55,10 +64,14 @@ def update_repo_status(action_status, modified_files, log_content):
         return
 
     # Determine background color based on status
-    tint_color = "#C0392B" if action_status == "failure" else "#27AE60"  # Darker red for failure, darker green for 
-    
-    caption = f"Workflow: {action_status}\nLog:\n{log_content}"  # Use log content on failure
-    
+    tint_color = "#C0392B" if action_status == "failure" else "#27AE60"  # Darker red for failure, darker green for success
+
+    # Format the news entry based on action status
+    if action_status == "failure":
+        caption = f"Workflow: {action_status}\nLog:\n{log_content}"  # Use log content on failure
+    else:
+        caption = f"Workflow: {action_status}\nList of files modified by last action: {', '.join(modified_files)}"
+
     # Update only the news entry
     status_info["news"] = [
         {
@@ -84,4 +97,4 @@ if __name__ == "__main__":
         
         log_content = fetch_workflow_log(last_run_info["log_url"])
         
-        update_repo_status(action_status, log_content)
+        update_repo_status(action_status, [], log_content)  # Pass empty list for modified files when fetching logs fails or on failure

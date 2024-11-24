@@ -3,6 +3,7 @@ import requests
 import json
 import zipfile
 import io
+from pathlib import Path
 
 # Get the GitHub token from environment variables
 GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
@@ -15,6 +16,30 @@ headers = {
     'Authorization': f'token {GITHUB_TOKEN}',
     'Accept': 'application/vnd.github.v3+json'
 }
+
+def extract_icon(ipa_path, app_name):
+    # Unzip IPA file
+    with zipfile.ZipFile(ipa_path, 'r') as z:
+        payload_path = [name for name in z.namelist() if name.startswith('Payload/') and name.endswith('.app/')][0]
+        app_icons = [name for name in z.namelist() if payload_path in name and 'AppIcon' in name and name.endswith('.png')]
+        
+        # Extract and save the largest icon (assuming it's the main app icon)
+        if app_icons:
+            largest_icon = max(app_icons, key=lambda x: int(x.split('@')[1].split('x')[0]) if '@' in x else 1)
+            icon_data = z.read(largest_icon)
+            
+            # Save to resources/icons/
+            icons_dir = Path('./resources/icons')
+            icons_dir.mkdir(parents=True, exist_ok=True)
+            icon_path = icons_dir / f"{app_name}_icon.png"
+            with open(icon_path, 'wb') as icon_file:
+                icon_file.write(icon_data)
+            
+            print(f"Extracted and saved app icon for {app_name}: {icon_path}")
+            return str(icon_path)
+        else:
+            print(f"No app icons found for {app_name}.")
+            return None
 
 def process_app(app_config):
     SOURCE_REPO_OWNER = app_config['repo_owner']
@@ -88,6 +113,9 @@ def process_app(app_config):
         with open(save_path, 'wb') as ipa_file:
             ipa_file.write(z.read(ipa_file_name))
 
+        # Extract and save app icon
+        icon_path = extract_icon(save_path, app_config['name'])
+
     print(f"Extracted and saved IPA File for {app_config['name']}: {save_path}")
 
     # Construct the download URL dynamically based on current repo info
@@ -99,7 +127,8 @@ def process_app(app_config):
         "version": version,
         "versionDate": latest_run['created_at'].split('T')[0],
         "versionDescription": f"Latest build from {latest_run['name']}",
-        "downloadURL": download_url
+        "downloadURL": download_url,
+        "iconURL": f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/resources/icons/{os.path.basename(icon_path)}" if icon_path else None
     }
 
 # Load app configurations
@@ -139,7 +168,5 @@ for updated_app in updated_apps:
 try:
     with open('sidestore_repo.json', 'w') as file:
         json.dump(data, file, indent=4)
-        print("Updated JSON content:")
-        print(json.dumps(data, indent=4))
 except Exception as e:
     print(f"Error writing to JSON file: {e}")

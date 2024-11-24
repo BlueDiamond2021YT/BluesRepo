@@ -17,7 +17,10 @@
             "tintColor": "#0784FC",
             "category": "utilities",
             "size": 905494,
-            "screenshotURLs": [],
+            "screenshotURLs": [
+                "https://raw.githubusercontent.com/khanhduytran0/LiveContainer/main/screenshots/screenshot1.png",
+                "https://raw.githubusercontent.com/khanhduytran0/LiveContainer/main/screenshots/screenshot2.png"
+            ],
             "appPermissions": {
                 "privacy": {
                     "NSBluetoothAlwaysUsageDescription": "The guest app is requesting for this permission.",
@@ -69,7 +72,9 @@
             "tintColor": "#0784FC",
             "category": "utilities",
             "size": 2669244,
-            "screenshotURLs": [],
+            "screenshotURLs": [
+                "https://raw.githubusercontent.com/hugeBlack/LiveContainer/main/screenshots/screenshot1.png"
+            ],
             "appPermissions": {
                 "privacy": {
                     "NSBluetoothAlwaysUsageDescription": "The guest app is requesting for this permission.",

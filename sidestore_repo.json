@@ -26,7 +26,7 @@
         {
             "beta": true,
             "name": "LiveContainer Experimental",
-            "bundleIdentifier": "com.kdt.livecontainer",
+            "bundleIdentifier": "com.kdt.livecontainer.experimental",
             "developerName": "hugeBlack",
             "version": "2510ea5",
             "versionDate": "2024-11-23",

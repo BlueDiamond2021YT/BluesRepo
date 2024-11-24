@@ -10,7 +10,8 @@
             "beta": false,
             "tintColor": "#0784FC",
             "category": "utilities",
-            "screenshots_directory": "/resources/screenshots/LiveContainer/"
+            "screenshots_directory": "./resources/screenshots/LiveContainer/",
+            "screenshots_path": "/resources/screenshots/LiveContainer/"
         },
         {
             "name": "LiveContainer Unstable",
@@ -22,6 +23,7 @@
             "beta": true,
             "tintColor": "#0784FC",
             "category": "utilities",
+            "screenshots_directory": "./resources/screenshots/LiveContainer/",
             "screenshots_directory": "/resources/screenshots/LiveContainer/"
         }
     ]

@@ -1,6 +1,6 @@
 {
     "name": "Github Workflow Builds",
-    "identifier": "com.Diamond.Nightly",
+    "identifier": "com.BluesSource.workflow",
     "sourceURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/sidestore_repo.json",
     "apps": [
         {

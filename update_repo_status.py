@@ -51,7 +51,7 @@ def update_repo_status(action_status, modified_files):
         return
 
     # Determine background color based on status
-    tint_color = "#F54F32" if action_status == "failure" else "#A3D9A5"  # Red for failure, light green for success
+    tint_color = "#C0392B" if action_status == "failure" else "#27AE60"  # Red for failure, light green for success
 
     # Format the news entry based on action status
     if action_status == "failure":

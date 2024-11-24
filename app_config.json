@@ -1,0 +1,18 @@
+{
+    "apps": [
+        {
+            "name": "LiveContainer",
+            "repo_owner": "khanhduytran0",
+            "repo_name": "LiveContainer",
+            "workflow_id": "build.yml",
+            "bundle_identifier": "com.kdt.livecontainer"
+        },
+        {
+            "name": "LiveContainer Experimental",
+            "repo_owner": "hugeBlack",
+            "repo_name": "LiveContainer",
+            "workflow_id": "build.yml",
+            "bundle_identifier": "com.kdt.livecontainer"
+        }
+    ]
+}

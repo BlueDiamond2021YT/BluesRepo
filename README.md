@@ -1,3 +1,6 @@
+> [!Caution]
+> THIS REPO IS EXPERIMENTAL AND DOES NOT FUNCTION CORRECTLY
+
 > [!Note]
 > The workflow and python script where both made by AI
 

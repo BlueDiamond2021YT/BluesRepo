@@ -18,12 +18,17 @@
             "category": "utilities",
             "size": 905494,
             "screenshots": [
-                {
-                    "imageURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/resources/screenshots/LiveContainer/iphone-1170x2532-1.png",
-                    "imageURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/resources/screenshots/LiveContainer/iphone-1170x2532-2.png",
-                    "width": 1170,
-                    "height": 2532
-                }
+                "ipad": [
+               {
+                  "imageURL": "https://example.com/ipad_portrait.png",
+                  "width": 1668,
+                  "height": 2388
+               },
+               {
+                  "imageURL": "https://altstore.io/ipad_landscape",
+                  "width": 2388,
+                  "height": 1668
+               }
             ],
             "appPermissions": {
                 "privacy": {

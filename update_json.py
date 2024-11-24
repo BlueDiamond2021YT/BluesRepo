@@ -78,7 +78,7 @@ def get_screenshots(screenshots_directory):
                 screenshot_number = parts[2].split('.')[0]  # e.g., 1 or 2
                 
                 width, height = dimensions.split('x')
-                image_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/{screenshots_directory}/{filename}"
+                image_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/{screenshots_path}/{filename}"
                 
                 screenshots.append({
                     "imageURL": image_url,
@@ -167,6 +167,7 @@ def process_app(app_config):
 
     # Get screenshots from the specified directory
     screenshots_directory = app_config.get('screenshots_directory', '')
+    screenshots_path = app_config.get('screenshots_path', '')
     
     screenshots_info = get_screenshots(screenshots_directory)
 

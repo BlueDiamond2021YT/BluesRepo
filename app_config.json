@@ -8,7 +8,7 @@
             "workflow_id": "build.yml",
             "bundle_identifier": "com.kdt.livecontainer",
             "beta": false,
-            "tintColor": "#0784FC"
+            "tintColor": "#0784FC",
             "category": "utilities"
         },
         {

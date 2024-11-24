@@ -63,10 +63,7 @@ def extract_icon_and_metadata(ipa_path, app_name):
         return str(icon_path), permissions
 
 def get_screenshots(screenshots_directory):
-    screenshots = {
-        "iphone": [],
-        "ipad": []
-    }
+    screenshots = []
     print(f"Scanning directory for screenshots: {screenshots_directory}")
     
     # Iterate through files in the specified directory
@@ -83,11 +80,16 @@ def get_screenshots(screenshots_directory):
                 width, height = dimensions.split('x')
                 image_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/{screenshots_directory.replace('./', '')}{filename}"
                 
-                screenshots[device_type].append({
+                screenshot_entry = {
                     "imageURL": image_url,
-                    "width": int(width),
-                    "height": int(height)
-                })
+                }
+                
+                # Include width and height only if they are present in the filename.
+                if len(parts) > 2:  # Ensure there are enough parts to extract width and height.
+                    screenshot_entry["width"] = int(width)
+                    screenshot_entry["height"] = int(height)
+
+                screenshots.append(screenshot_entry)
                 print(f"Found screenshot: {image_url} with dimensions ({width}, {height})")
     
     return screenshots

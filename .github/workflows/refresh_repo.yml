@@ -1,4 +1,4 @@
-name: Update AltStore repo JSON
+name: Refresh AltStore repo JSON
 
 on:
   schedule:

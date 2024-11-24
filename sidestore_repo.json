@@ -17,9 +17,10 @@
             "tintColor": "#0784FC",
             "category": "utilities",
             "size": 905494,
-            "screenshotURLs": [
-                "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/resources/screenshots/LiveContainer/LiveContainerScreenshot1-iPhone13.png"
-            ],
+            "screenshots": {
+                "deviceType": "unknown",
+                "images": []
+            },
             "appPermissions": {
                 "privacy": {
                     "NSBluetoothAlwaysUsageDescription": "The guest app is requesting for this permission.",
@@ -71,9 +72,10 @@
             "tintColor": "#0784FC",
             "category": "utilities",
             "size": 2669244,
-            "screenshotURLs": [
-                "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/resources/screenshots/LiveContainer/LiveContainerScreenshot1-iPhone13.png"
-            ],
+            "screenshots": {
+                "deviceType": "unknown",
+                "images": []
+            },
             "appPermissions": {
                 "privacy": {
                     "NSBluetoothAlwaysUsageDescription": "The guest app is requesting for this permission.",

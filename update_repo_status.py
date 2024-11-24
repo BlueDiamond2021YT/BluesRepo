@@ -29,11 +29,16 @@ def get_last_workflow_run():
     # Get the most recent run
     latest_run = runs['workflow_runs'][0]
     
+    # Get the error message if the workflow failed
+    error_message = ""
+    if latest_run["conclusion"] == "failure":
+        error_message = latest_run.get("failure_reason", "No specific error message available")
+
     return {
         "status": latest_run["conclusion"],  # Success or Failure
         "date": latest_run["created_at"],      # ISO-8601 format date
         "modified_files": latest_run.get("head_commit", {}).get("modified", []),
-        "error_message": latest_run.get("run_attempt", {}).get("conclusion")  # Capture error message if available
+        "error_message": error_message  # Capture error message if available
     }
 
 def update_repo_status(action_status, modified_files):
@@ -50,7 +55,7 @@ def update_repo_status(action_status, modified_files):
 
     # Format the news entry based on action status
     if action_status == "failure":
-        caption = f"Workflow: {action_status}\nError Message: {latest_run.get('error_message', 'No error message available')}"
+        caption = f"Workflow: {action_status}\nError Message: {error_message}"
         modified_files = []  # Clear modified files list since we're using the error message
     else:
         caption = f"Workflow: {action_status}\nList of files modified by last action: {', '.join(modified_files)}"

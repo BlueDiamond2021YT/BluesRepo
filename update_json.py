@@ -114,7 +114,7 @@ def process_app(app_config):
     download_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/downloads/{app_config['name']}/{os.path.basename(save_path)}"
 
     return {
-        "beta": True,
+        "beta": app_config['beta'],
         "name": app_config['name'],
         "bundleIdentifier": app_config['bundle_identifier'],
         "developerName": SOURCE_REPO_OWNER,
@@ -124,8 +124,8 @@ def process_app(app_config):
         "downloadURL": download_url,
         "iconURL": f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/resources/icons/{os.path.basename(icon_path)}",
         "localizedDescription": "Run iOS app without actually installing it!",
-        "tintColor": "#0784FC",
-        "category": "utilities",
+        "tintColor": app_config['tintColor'],
+        "category": app_config['category'],
         "size": os.path.getsize(save_path),
         "screenshotURLs": [],
         "appPermissions": {

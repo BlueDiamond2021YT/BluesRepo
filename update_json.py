@@ -141,18 +141,12 @@ def process_app(app_config):
     # Include screenshots from app config with device types and dimensions
     screenshots_info = app_config.get('screenshots', {})
     
-    # Prepare screenshot data based on available device types
-    screenshots_output = {}
+    device_type = screenshots_info.get('deviceType', 'unknown')
     
-    if 'iphone' in screenshots_info:
-         screenshots_output["iphone"] = screenshots_info["iphone"]
-         print("iPhone screenshots added.")
-         
-    if 'ipad' in screenshots_info:
-         screenshots_output["ipad"] = screenshots_info["ipad"]
-         print("iPad screenshots added.")
-
-     return
+    # Prepare screenshots based on device type information.
+    images_info = screenshots_info.get('images', [])
+    
+    return {
          "beta": app_config.get('beta', False),
          "name": app_config['name'],
          "bundleIdentifier": app_config['bundle_identifier'],
@@ -167,11 +161,14 @@ def process_app(app_config):
          "category": app_config.get('category', ''),
          "size": os.path.getsize(save_path),
          
-         # Add screenshots with device type information; only include available types.
-         **screenshots**: screenshots_output,
+         # Add screenshots with device type information.
+         **screenshots**: {
+             **deviceType**: device_type,
+             **images**: images_info,
+         },
          
          **appPermissions**: permissions  # Directly use the extracted permissions
-     
+     }
 
 with open('app_config.json', 'r') as config_file:
      app_configs = json.load(config_file)['apps']

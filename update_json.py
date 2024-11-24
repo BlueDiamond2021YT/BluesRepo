@@ -125,7 +125,7 @@ def process_app(app_config):
         "versionDescription": commit_message,
         "downloadURL": download_url,
         "iconURL": f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/resources/icons/{os.path.basename(icon_path)}",
-        "localizedDescription": "Run iOS app without actually installing it!",
+        "localizedDescription": app_config['localizedDescription'],
         "tintColor": app_config['tintColor'],
         "category": app_config['category'],
         "size": os.path.getsize(save_path),

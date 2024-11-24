@@ -4,7 +4,7 @@
     "sourceURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/sidestore_repo.json",
     "apps": [
         {
-            "beta": true,
+            "beta": false,
             "name": "LiveContainer",
             "bundleIdentifier": "com.kdt.livecontainer"
             "developerName": "khanhduytran0",

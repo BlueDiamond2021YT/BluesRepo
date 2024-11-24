@@ -39,7 +39,7 @@
             "height": 1668
         }
     ]
-}
+},
             "appPermissions": {
                 "privacy": {
                     "NSBluetoothAlwaysUsageDescription": "The guest app is requesting for this permission.",

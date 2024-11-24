@@ -9,7 +9,7 @@ CURRENT_REPO = os.environ.get('GITHUB_REPOSITORY')
 WORKFLOW_NAME = "refresh_repo.yml"  # The workflow to monitor
 
 def get_last_workflow_run():
-    url = f"https://api.github.com/repos/{GITHUB_REPOSITORY}/actions/workflows/{WORKFLOW_NAME}/runs"
+    url = f"https://api.github.com/repos/{CURRENT_REPO}/actions/workflows/{WORKFLOW_NAME}/runs"
     headers = {
         'Authorization': f'token {GITHUB_TOKEN}',
         'Accept': 'application/vnd.github.v3+json'

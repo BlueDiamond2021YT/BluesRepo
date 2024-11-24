@@ -2,9 +2,9 @@ name: Update AltStore repo JSON
 
 on:
   schedule:
-    - cron: "*/30 * * * *"  # Runs every 5 minutes
+    - cron: "*/30 * * * *"  # Runs every 30 minutes
   workflow_dispatch:
-  
+
 permissions:
   contents: write
 
@@ -37,16 +37,18 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Check for Changes and Commit
+        id: commit
         run: |
           git add sidestore_repo.json downloads/
-          if ! git diff-index --quiet HEAD; then
+          if ! git diff --cached --quiet; then
             git commit -m "Update SideStore JSON file and add new IPA"
+            echo "changes=true" >> $GITHUB_ENV
           else
             echo "No changes to commit."
-          fi
+            echo "changes=false" >> $GITHUB_ENV
 
       - name: Push Changes
-        if: success() && steps.commit.outputs.changes == 'true'
+        if: env.changes == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

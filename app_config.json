@@ -5,7 +5,8 @@
             "repo_owner": "khanhduytran0",
             "repo_name": "LiveContainer",
             "workflow_id": "build.yml",
-            "bundle_identifier": "com.kdt.livecontainer"
+            "bundle_identifier": "com.kdt.livecontainer",
+            "beta": false
         },
         {
             "name": "LiveContainer Experimental",
@@ -13,6 +14,7 @@
             "repo_name": "LiveContainer",
             "workflow_id": "build.yml",
             "bundle_identifier": "com.kdt.livecontainer.experimental"
+            "beta": true
         }
     ]
 }

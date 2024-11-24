@@ -4,7 +4,7 @@
 > [!Note]
 > The workflow and python script where both made by AI
 
-# BlueDiamond's AltStore Repo
+# BlueDiamonds AltStore Repo
 
 <p align="center">
   <a href=""><img alt="" src="https://img.shields.io/github/last-commit/BlueDiamond2021YT/MySideStoreRepo" /></a>

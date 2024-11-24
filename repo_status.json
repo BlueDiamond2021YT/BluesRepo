@@ -1,15 +1,15 @@
 {
-  "name": "BluesRepo Status",
-  "identifier": "com.status.BlueDiamondsRepo",
-  "subtitle": "Status of BluesRepo",
-  "description": "See the status of BluesRepo from Alt/SideStore!",
-  "news": [
-    {
-      "title": "Last repo refresh: 2024-11-24T14:30:00Z",
-      "identifier": "repo_status",
-      "caption": "Last Workflow Status: Success ✅\nList of files modified by last action: file1.json, file2.json",
-      "date": "2024-11-24T14:30:00Z",
-      "tintColor": "#F54F32"
-    }
-  ]
+    "name": "BluesRepo Status",
+    "identifier": "com.status.BlueDiamondsRepo",
+    "subtitle": "Status of BluesRepo",
+    "description": "See the status of BluesRepo from Alt/SideStore!",
+    "news": [
+        {
+            "title": "Last repo refresh: 2024-11-24 20:44:30",
+            "identifier": "repo_status",
+            "caption": "Workflow: success\nList of files modified by last action: ",
+            "date": "2024-11-24T20:44:30.272502",
+            "tintColor": "#F54F32"
+        }
+    ]
 }

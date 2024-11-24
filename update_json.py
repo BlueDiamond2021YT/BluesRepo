@@ -34,26 +34,32 @@ def extract_icon_and_metadata(ipa_path, app_name):
             with open(icon_path, 'wb') as icon_file:
                 icon_file.write(icon_data)
         
-        # Extract entitlements from the binary
+        # Prepare to extract entitlements from the binary
         binary_path = f"{payload_path}/{app_name}.app/{app_name}"  # Adjust based on your app's naming convention
-        entitlements_command = f"codesign -d --entitlements :- {binary_path}"
         
+        # Extract entitlements using codesign command
         try:
+            entitlements_command = f"codesign -d --entitlements :- {binary_path}"
             entitlements_output = subprocess.check_output(entitlements_command, shell=True).decode('utf-8')
             entitlements_dict = plistlib.loads(entitlements_output.encode('utf-8'))
-            permissions = {'entitlements': list(entitlements_dict.keys())}
+            entitlements_list = list(entitlements_dict.keys())
         except subprocess.CalledProcessError as e:
             print(f"Failed to extract entitlements: {e}")
-            permissions = {'entitlements': []}
+            entitlements_list = []
 
         # Read Info.plist for permissions
         info_plist_path = f"{payload_path}/Info.plist"
+        permissions = {}
+        
         if info_plist_path in z.namelist():
             info_plist_data = z.read(info_plist_path)
             info_dict = plistlib.loads(info_plist_data)
             permissions['privacy'] = {key: value for key, value in info_dict.items() if "UsageDescription" in key}
-
-        return str(icon_path), permissions
+        
+        return str(icon_path), {
+            "entitlements": entitlements_list,
+            "permissions": permissions['privacy']
+        }
 
 def process_app(app_config):
     SOURCE_REPO_OWNER = app_config['repo_owner']
@@ -122,7 +128,7 @@ def process_app(app_config):
         with open(save_path, 'wb') as ipa_file:
             ipa_file.write(z.read(ipa_file_name))
 
-        icon_path, permissions = extract_icon_and_metadata(save_path, app_config['name'])
+        icon_path, permissions_info = extract_icon_and_metadata(save_path, app_config['name'])
 
     print(f"Extracted and saved IPA File for {app_config['name']}: {save_path}")
 
@@ -143,7 +149,10 @@ def process_app(app_config):
         "category": app_config.get('category', ''),
         "size": os.path.getsize(save_path),
         "screenshotURLs": [],
-        "appPermissions": permissions  # Directly use the extracted permissions
+        "appPermissions": {
+            "entitlements": permissions_info["entitlements"],
+            "privacy": permissions_info["permissions"]
+        }
     }
 
 with open('app_config.json', 'r') as config_file:

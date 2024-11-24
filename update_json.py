@@ -62,6 +62,33 @@ def extract_icon_and_metadata(ipa_path, app_name):
 
         return str(icon_path), permissions
 
+def get_screenshots(screenshots_directory):
+    screenshots = []
+    print(f"Scanning directory for screenshots: {screenshots_directory}")
+    
+    # Iterate through files in the specified directory
+    for filename in os.listdir(screenshots_directory):
+        if filename.endswith('.png'):
+            # Extract width, height, and screenshot number from filename
+            parts = filename.split('-')
+            
+            if len(parts) >= 3:
+                device_type = parts[0]  # e.g., iphone or ipad
+                dimensions = parts[1]   # e.g., 1170x2532
+                screenshot_number = parts[2].split('.')[0]  # e.g., 1 or 2
+                
+                width, height = dimensions.split('x')
+                image_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/{screenshots_directory}/{filename}"
+                
+                screenshots.append({
+                    "imageURL": image_url,
+                    "width": int(width),
+                    "height": int(height)
+                })
+                print(f"Found screenshot: {image_url} with dimensions ({width}, {height})")
+    
+    return screenshots
+
 def process_app(app_config):
     print(f"Processing app configuration for {app_config['name']}")
     SOURCE_REPO_OWNER = app_config['repo_owner']
@@ -138,14 +165,11 @@ def process_app(app_config):
 
     download_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/downloads/{app_config['name']}/{os.path.basename(save_path)}"
 
-    # Include screenshots from app config with device types and dimensions
-    screenshots_info = app_config.get('screenshots', {})
+    # Get screenshots from the specified directory
+    screenshots_directory = app_config.get('screenshots_directory', '')
     
-    device_type = screenshots_info.get('deviceType', 'unknown')
-    
-    # Prepare images based on the provided structure.
-    images_info = screenshots_info.get('images', [])
-    
+    screenshots_info = get_screenshots(screenshots_directory)
+
     return {
          "beta": app_config.get('beta', False),
          "name": app_config['name'],
@@ -161,13 +185,11 @@ def process_app(app_config):
          "category": app_config.get('category', ''),
          "size": os.path.getsize(save_path),
          
-         # Add screenshots with device type information.
-         "screenshots": {
-             "deviceType": device_type,
-             "images": images_info,
-         },
+         # Add screenshots information.
+         "screenshots": screenshots_info,
          
-         "appPermissions": permissions  # Directly use the extracted permissions
+         # Include extracted permissions.
+         "appPermissions": permissions  
      }
 
 with open('app_config.json', 'r') as config_file:

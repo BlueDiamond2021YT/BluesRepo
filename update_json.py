@@ -5,6 +5,7 @@ import zipfile
 import io
 from pathlib import Path
 import plistlib
+import subprocess
 
 # Get the GitHub token from environment variables
 GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
@@ -68,34 +69,43 @@ def extract_icon_and_metadata(ipa_path, app_name):
         else:
             print("No Info.plist found.")
 
-        return str(icon_path), permissions, version_number, build_number
+        return str(icon_path), permissions, version_number, build_number, payload_path
 
-def get_screenshots(screenshots_directory):
-    screenshots = []
-    print(f"Scanning directory for screenshots: {screenshots_directory}")
+def modify_info_plist(payload_path, workflow_id):
+    info_plist_file = Path(payload_path) / "Info.plist"
     
-    # Iterate through files in the specified directory
-    for filename in os.listdir(screenshots_directory):
-        if filename.endswith('.png'):
-            parts = filename.split('-')
-            
-            if len(parts) >= 3:
-                device_type = parts[0]  # e.g., iphone or ipad
-                dimensions = parts[1]   # e.g., 1170x2532
-                
-                width, height = dimensions.split('x')
-                image_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/{screenshots_directory.replace('./', '')}{filename}"
-                
-                screenshot_info = {
-                    "imageURL": image_url,
-                    "width": int(width),
-                    "height": int(height)
-                }
-                
-                screenshots.append(screenshot_info)
-                print(f"Found screenshot: {image_url} with dimensions ({width}, {height})")
+    # Load the existing Info.plist
+    with open(info_plist_file, 'rb') as f:
+        plist_data = plistlib.load(f)
+
+    # Modify the CFBundleVersion to match the workflow ID
+    plist_data["CFBundleVersion"] = workflow_id
+
+    # Save the modified Info.plist back to disk
+    with open(info_plist_file, 'wb') as f:
+        plistlib.dump(plist_data, f)
+
+    print(f"Modified Info.plist with new build ID: {workflow_id}")
+
+def re_sign_ipa(ipa_file, payload_path):
+    # Remove existing code signature
+    subprocess.run(["rm", "-rf", str(Path(payload_path) / "_CodeSignature")])
+
+    # Re-sign the app using your signing identity (replace with your identity)
+    signing_identity = "iPhone Distribution: Your Name or Company"
     
-    return screenshots
+    # This assumes you have an entitlements file; create one as needed.
+    entitlements_file = str(Path(payload_path) / "entitlements.plist")
+    
+    subprocess.run([
+        "codesign",
+        "-f",
+        "-s", signing_identity,
+        "--entitlements", entitlements_file,
+        str(Path(payload_path))
+    ])
+
+    print("Re-signed IPA successfully.")
 
 def process_app(app_config):
     print(f"Processing app configuration for {app_config['name']}")
@@ -169,9 +179,15 @@ def process_app(app_config):
         
         print(f"Saved IPA file to: {save_path}")
 
-        icon_path, permissions, version_number, build_number = extract_icon_and_metadata(save_path, app_config['name'])
+        icon_path, permissions, version_number, build_number, payload_path = extract_icon_and_metadata(save_path, app_config['name'])
 
     download_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/downloads/{app_config['name']}/{os.path.basename(save_path)}"
+
+    # Modify Info.plist with workflow ID as build number
+    modify_info_plist(payload_path, run_id)
+
+    # Re-sign the IPA after modification
+    re_sign_ipa(save_path, payload_path)
 
     # Get screenshots from the specified directory
     screenshots_directory = app_config.get('screenshots_directory', '')
@@ -208,7 +224,7 @@ with open('app_config.json', 'r') as config_file:
 updated_apps = []
 for app_config in app_configs:
      app_data = process_app(app_config)
-     if app_data:
+     if app_data is not None:  # Ensure we only append valid data
          updated_apps.append(app_data)
 
 try:
@@ -228,12 +244,14 @@ for updated_app in updated_apps:
          existing_versions = data['apps'][existing_app_index].get("versions", [])
          
          # Check if this version already exists based on version and build number
-         if not any(version["version"] == updated_app["versions"][0]["version"] and 
-                    version["buildVersion"] == updated_app["versions"][0]["buildVersion"] 
+         new_version_info = updated_app["versions"][0]  # Get the first item from versions array
+        
+         if not any(version["version"] == new_version_info["version"] and 
+                    version["buildVersion"] == new_version_info["buildVersion"] 
                     for version in existing_versions):
-             existing_versions.append(updated_app["versions"][0])  # Append new version details
+             existing_versions.append(new_version_info)  # Append new version details
              data['apps'][existing_app_index]["versions"] = existing_versions  # Update versions list
-             print(f"Added new version {updated_app['versions'][0]['version']} (build {updated_app['versions'][0]['buildVersion']}) for {updated_app['name']}.")
+             print(f"Added new version {new_version_info['version']} (build {new_version_info['buildVersion']}) for {updated_app['name']}.")
      else:
          # If the app is new, add it with its first version.
          data.setdefault('apps', []).append(updated_app)  # Append new app data

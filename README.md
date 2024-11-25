@@ -13,7 +13,7 @@
   <a href=""><img alt="" src="https://img.shields.io/github/repo-size/BlueDiamond2021YT/MySideStoreRepo" /></a>
 </p>
 
-A repository for SideStore, featuring workflow builds of LiveContainer sourced from the origional github repo.
+A source for SideStore, featuring workflow builds of LiveContainer sourced from an experimental fork by hugeBlack.
 
 ## About
 I origionally made this repo to be able to stay up to date with the LiveContainer workflow builds without having to check the github actions every once in a while.

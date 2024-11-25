@@ -50,17 +50,25 @@ def extract_icon_and_metadata(ipa_path, app_name):
         else:
             print("No entitlements found.")
 
-        # Read Info.plist for permissions
+        # Read Info.plist for permissions and version/build numbers
         info_plist_path = f"{payload_path}Info.plist"
+        build_number = None
+        version_number = None
+        
         if info_plist_path in z.namelist():
             info_plist_data = z.read(info_plist_path)
             info_dict = plistlib.loads(info_plist_data)
             permissions['privacy'] = {key: value for key, value in info_dict.items() if "UsageDescription" in key}
             print(f"Extracted privacy permissions: {permissions['privacy']}")
+            
+            # Extract version and build number
+            version_number = info_dict.get("CFBundleShortVersionString", "Unknown")
+            build_number = info_dict.get("CFBundleVersion", "Unknown")
+            print(f"Extracted version: {version_number}, build number: {build_number}")
         else:
             print("No Info.plist found.")
 
-        return str(icon_path), permissions
+        return str(icon_path), permissions, version_number, build_number
 
 def get_screenshots(screenshots_directory):
     screenshots = []
@@ -162,7 +170,7 @@ def process_app(app_config):
         
         print(f"Saved IPA file to: {save_path}")
 
-        icon_path, permissions = extract_icon_and_metadata(save_path, app_config['name'])
+        icon_path, permissions, version_number, build_number = extract_icon_and_metadata(save_path, app_config['name'])
 
     download_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/downloads/{app_config['name']}/{os.path.basename(save_path)}"
 
@@ -176,7 +184,8 @@ def process_app(app_config):
          "name": app_config['name'],
          "bundleIdentifier": app_config['bundle_identifier'],
          "developerName": SOURCE_REPO_OWNER,
-         "version": version_id,
+         "version": version_number,
+         "buildNumber": build_number,
          "versionDate": latest_run['created_at'].split('T')[0],
          "versionDescription": commit_message,
          "downloadURL": download_url,
@@ -219,19 +228,21 @@ for updated_app in updated_apps:
          existing_versions = data['apps'][existing_app_index].get("versions", [])
          
          # Check if this version already exists
-         if not any(version["version"] == updated_app["version"] for version in existing_versions):
+         if not any(version["version"] == updated_app["version"] and version["buildNumber"] == updated_app["buildNumber"] for version in existing_versions):
              existing_versions.append({
                  "version": updated_app["version"],
+                 "buildNumber": updated_app["buildNumber"],
                  "versionDate": updated_app["versionDate"],
                  "versionDescription": updated_app["versionDescription"],
                  "downloadURL": updated_app["downloadURL"],
              })
              data['apps'][existing_app_index]["versions"] = existing_versions  # Update versions list
-             print(f"Added new version {updated_app['version']} for {updated_app['name']}.")
+             print(f"Added new version {updated_app['version']} (build {updated_app['buildNumber']}) for {updated_app['name']}.")
      else:
          # If the app is new, add it with its first version.
          updated_app["versions"] = [{
              "version": updated_app["version"],
+             "buildNumber": updated_app["buildNumber"],
              "versionDate": updated_app["versionDate"],
              "versionDescription": updated_app["versionDescription"],
              "downloadURL": updated_app["downloadURL"],

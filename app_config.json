@@ -6,7 +6,7 @@
             "repo_owner": "hugeBlack",
             "repo_name": "LiveContainer",
             "workflow_id": "build.yml",
-            "bundle_identifier": "com.kdt.livecontainer"
+            "bundle_identifier": "com.kdt.livecontainer",
             "beta": true,
             "tintColor": "#0784FC",
             "category": "utilities",

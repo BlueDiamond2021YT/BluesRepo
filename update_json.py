@@ -69,7 +69,6 @@ def get_screenshots(screenshots_directory):
     # Iterate through files in the specified directory
     for filename in os.listdir(screenshots_directory):
         if filename.endswith('.png'):
-            # Extract device type, dimensions, and screenshot number from filename
             parts = filename.split('-')
             
             if len(parts) >= 3:
@@ -84,7 +83,6 @@ def get_screenshots(screenshots_directory):
                 })
                 print(f"Found screenshot: {image_url} with dimensions ({width}, {height})")
     
-    # If there are any screenshots, add width and height to the last one only
     if screenshots:
         last_screenshot_index = len(screenshots) - 1
         screenshots[last_screenshot_index]["width"] = int(width)
@@ -156,8 +154,8 @@ def process_app(app_config):
         
         ipa_file_name = ipa_files[0]
         
-        version = latest_run['head_commit']['id'][:7]
-        save_path = downloads_dir / f"{ipa_file_name[:-4]}-{version}.ipa"
+        version_id = latest_run['head_commit']['id'][:7]  # Use short SHA as version ID
+        save_path = downloads_dir / f"{ipa_file_name[:-4]}-{version_id}.ipa"
 
         with open(save_path, 'wb') as ipa_file:
             ipa_file.write(z.read(ipa_file_name))
@@ -178,7 +176,7 @@ def process_app(app_config):
          "name": app_config['name'],
          "bundleIdentifier": app_config['bundle_identifier'],
          "developerName": SOURCE_REPO_OWNER,
-         "version": version,
+         "version": version_id,
          "versionDate": latest_run['created_at'].split('T')[0],
          "versionDescription": commit_message,
          "downloadURL": download_url,
@@ -206,8 +204,6 @@ for app_config in app_configs:
 
 try:
      with open('sidestore_repo.json', 'r') as file:
-         if os.stat('sidestore_repo.json').st_size == 0:
-             raise ValueError("JSON file is empty.")
          data = json.load(file)
 except (FileNotFoundError, ValueError) as e:
      print(f"Error loading JSON file: {e}")
@@ -216,13 +212,31 @@ except (FileNotFoundError, ValueError) as e:
 for updated_app in updated_apps:
      unique_key = (updated_app["name"], updated_app["bundleIdentifier"])
      
-     existing_app_index = next((index for (index, d) in enumerate(data['apps']) 
+     existing_app_index = next((index for (index, d) in enumerate(data.get('apps', [])) 
                                 if (d["name"], d["bundleIdentifier"]) == unique_key), None)
      
      if existing_app_index is not None:
-         data['apps'][existing_app_index] = updated_app
+         existing_versions = data['apps'][existing_app_index].get("versions", [])
+         
+         # Check if this version already exists
+         if not any(version["version"] == updated_app["version"] for version in existing_versions):
+             existing_versions.append({
+                 "version": updated_app["version"],
+                 "versionDate": updated_app["versionDate"],
+                 "versionDescription": updated_app["versionDescription"],
+                 "downloadURL": updated_app["downloadURL"],
+             })
+             data['apps'][existing_app_index]["versions"] = existing_versions  # Update versions list
+             print(f"Added new version {updated_app['version']} for {updated_app['name']}.")
      else:
-         data['apps'].append(updated_app)
+         # If the app is new, add it with its first version.
+         updated_app["versions"] = [{
+             "version": updated_app["version"],
+             "versionDate": updated_app["versionDate"],
+             "versionDescription": updated_app["versionDescription"],
+             "downloadURL": updated_app["downloadURL"],
+         }]
+         data.setdefault('apps', []).append(updated_app)  # Append new app data
 
 try:
      with open('sidestore_repo.json', 'w') as file:

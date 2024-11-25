@@ -4,67 +4,6 @@
     "sourceURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/sidestore_repo.json",
     "apps": [
         {
-            "beta": false,
-            "name": "LiveContainer",
-            "bundleIdentifier": "com.kdt.livecontainer",
-            "developerName": "khanhduytran0",
-            "version": "5d54a31",
-            "versionDate": "2024-11-18",
-            "versionDescription": "New jit less mode (#213)\n\n* zsign POC\r\n\r\n* new jitless mode & remove unused files\r\n\r\n* better project structure\r\n\r\n* recover info.plist\r\n\r\n* readme update\r\n\r\n* Update app hiding in readme",
-            "downloadURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/downloads/LiveContainer/com.kdt.livecontainer_3.0.0-5d54a31.ipa",
-            "iconURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/resources/icons/LiveContainer_icon.png",
-            "localizedDescription": "Run iOS app without actually installing it!",
-            "tintColor": "#0784FC",
-            "category": "utilities",
-            "size": 905494,
-            "screenshots": [
-                {
-                    "imageURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/resources/screenshots/LiveContainer/iphone-1170x2532-2.png"
-                },
-                {
-                    "imageURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/resources/screenshots/LiveContainer/iphone-1170x2532-1.png",
-                    "width": 1170,
-                    "height": 2532
-                }
-            ],
-            "appPermissions": {
-                "privacy": {
-                    "NSBluetoothAlwaysUsageDescription": "The guest app is requesting for this permission.",
-                    "NFCReaderUsageDescription": "The guest app is requesting for this permission.",
-                    "NSSensorKitUsageDescription": "The guest app is requesting for this permission.",
-                    "NSSiriUsageDescription": "The guest app is requesting for this permission.",
-                    "NSCameraUsageDescription": "The guest app is requesting for this permission.",
-                    "NSNearbyInteractionAllowOnceUsageDescription": "The guest app is requesting for this permission.",
-                    "NSFallDetectionUsageDescription": "The guest app is requesting for this permission.",
-                    "NSIdentityUsageDescription": "The guest app is requesting for this permission.",
-                    "NSGKFriendListUsageDescription": "The guest app is requesting for this permission.",
-                    "NSHealthClinicalHealthRecordsShareUsageDescription": "The guest app is requesting for this permission.",
-                    "NSUserTrackingUsageDescription": "The guest app is requesting for this permission.",
-                    "NSHealthUpdateUsageDescription": "The guest app is requesting for this permission.",
-                    "NSMotionUsageDescription": "The guest app is requesting for this permission.",
-                    "NSBluetoothPeripheralUsageDescription": "The guest app is requesting for this permission.",
-                    "NSPhotoLibraryAddUsageDescription": "The guest app is requesting for this permission.",
-                    "NSLocalNetworkUsageDescription": "The guest app is requesting for this permission.",
-                    "NSHealthShareUsageDescription": "The guest app is requesting for this permission.",
-                    "NSRemindersFullAccessUsageDescription": "The guest app is requesting for this permission.",
-                    "NSLocationTemporaryUsageDescriptionDictionary": "The guest app is requesting for this permission.",
-                    "NSAppleMusicUsageDescription": "The guest app is requesting for this permission.",
-                    "NSSpeechRecognitionUsageDescription": "The guest app is requesting for this permission.",
-                    "NSLocationUsageDescription": "The guest app is requesting for this permission.",
-                    "NSMicrophoneUsageDescription": "The guest app is requesting for this permission.",
-                    "NSLocationWhenInUseUsageDescription": "The guest app is requesting for this permission.",
-                    "NSCalendarsWriteOnlyAccessUsageDescription": "The guest app is requesting for this permission.",
-                    "NSFaceIDUsageDescription": "The guest app is requesting for this permission.",
-                    "NSLocationAlwaysAndWhenInUseUsageDescription": "The guest app is requesting for this permission.",
-                    "NSHomeKitUsageDescription": "The guest app is requesting for this permission.",
-                    "NSCalendarsFullAccessUsageDescription": "The guest app is requesting for this permission.",
-                    "NSContactsUsageDescription": "The guest app is requesting for this permission.",
-                    "NSNearbyInteractionUsageDescription": "The guest app is requesting for this permission.",
-                    "NSPhotoLibraryUsageDescription": "The guest app is requesting for this permission."
-                }
-            }
-        },
-        {
             "beta": true,
             "name": "LiveContainer Unstable",
             "bundleIdentifier": "com.kdt.livecontainer.experimental",

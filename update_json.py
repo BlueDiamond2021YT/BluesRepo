@@ -86,16 +86,15 @@ def get_screenshots(screenshots_directory):
                 width, height = dimensions.split('x')
                 image_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/{screenshots_directory.replace('./', '')}{filename}"
                 
-                screenshots.append({
+                screenshot_info = {
                     "imageURL": image_url,
-                })
+                    "width": int(width),
+                    "height": int(height)
+                }
+                
+                screenshots.append(screenshot_info)
                 print(f"Found screenshot: {image_url} with dimensions ({width}, {height})")
     
-    if screenshots:
-        last_screenshot_index = len(screenshots) - 1
-        screenshots[last_screenshot_index]["width"] = int(width)
-        screenshots[last_screenshot_index]["height"] = int(height)
-
     return screenshots
 
 def process_app(app_config):
@@ -184,17 +183,18 @@ def process_app(app_config):
          "name": app_config['name'],
          "bundleIdentifier": app_config['bundle_identifier'],
          "developerName": SOURCE_REPO_OWNER,
-         "version": version_number,
-         "buildNumber": build_number,
-         "versionDate": latest_run['created_at'].split('T')[0],
-         "versionDescription": commit_message,
-         "downloadURL": download_url,
-         "iconURL": f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/resources/icons/{os.path.basename(icon_path)}",
+         "subtitle": app_config.get('subtitle', ''),
          "localizedDescription": app_config.get('localizedDescription', ''),
+         "iconURL": f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/resources/icons/{os.path.basename(icon_path)}",
          "tintColor": app_config.get('tintColor', ''),
-         "category": app_config.get('category', ''),
-         "size": os.path.getsize(save_path),
-         
+         "versions": [{
+             "version": version_number,
+             "buildVersion": build_number,
+             "date": latest_run['created_at'],  # ISO 8601 format date
+             "localizedDescription": commit_message,
+             "downloadURL": download_url,
+             "size": os.path.getsize(save_path),
+         }],
          # Add screenshots information.
          "screenshots": screenshots_info,
          
@@ -227,26 +227,15 @@ for updated_app in updated_apps:
      if existing_app_index is not None:
          existing_versions = data['apps'][existing_app_index].get("versions", [])
          
-         # Check if this version already exists
-         if not any(version["version"] == updated_app["version"] and version["buildNumber"] == updated_app["buildNumber"] for version in existing_versions):
-             existing_versions.append({
-                 "version": updated_app["version"],
-                 "buildNumber": updated_app["buildNumber"],
-                 "versionDate": updated_app["versionDate"],
-                 "versionDescription": updated_app["versionDescription"],
-                 "downloadURL": updated_app["downloadURL"],
-             })
+         # Check if this version already exists based on version and build number
+         if not any(version["version"] == updated_app["versions"][0]["version"] and 
+                    version["buildVersion"] == updated_app["versions"][0]["buildVersion"] 
+                    for version in existing_versions):
+             existing_versions.append(updated_app["versions"][0])  # Append new version details
              data['apps'][existing_app_index]["versions"] = existing_versions  # Update versions list
-             print(f"Added new version {updated_app['version']} (build {updated_app['buildNumber']}) for {updated_app['name']}.")
+             print(f"Added new version {updated_app['versions'][0]['version']} (build {updated_app['versions'][0]['buildVersion']}) for {updated_app['name']}.")
      else:
          # If the app is new, add it with its first version.
-         updated_app["versions"] = [{
-             "version": updated_app["version"],
-             "buildNumber": updated_app["buildNumber"],
-             "versionDate": updated_app["versionDate"],
-             "versionDescription": updated_app["versionDescription"],
-             "downloadURL": updated_app["downloadURL"],
-         }]
          data.setdefault('apps', []).append(updated_app)  # Append new app data
 
 try:

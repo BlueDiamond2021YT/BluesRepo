@@ -87,25 +87,24 @@ def modify_info_plist(payload_path, workflow_id):
 
     print(f"Modified Info.plist with new build ID: {workflow_id}")
 
-def re_sign_ipa(ipa_file, payload_path):
-    # Remove existing code signature
-    subprocess.run(["rm", "-rf", str(Path(payload_path) / "_CodeSignature")])
-
-    # Re-sign the app using your signing identity (replace with your identity)
-    signing_identity = "iPhone Distribution: Your Name or Company"
+def repackage_ipa(downloads_dir, ipa_file_name):
+    """Repackage the modified contents back into an IPA file."""
+    ipa_file_path = downloads_dir / f"{ipa_file_name[:-4]}-modified.ipa"
     
-    # This assumes you have an entitlements file; create one as needed.
-    entitlements_file = str(Path(payload_path) / "entitlements.plist")
-    
-    subprocess.run([
-        "codesign",
-        "-f",
-        "-s", signing_identity,
-        "--entitlements", entitlements_file,
-        str(Path(payload_path))
-    ])
+    # Create a Payload directory and move the .app into it
+    payload_dir = Path(downloads_dir) / "Payload"
+    payload_dir.mkdir(parents=True, exist_ok=True)
 
-    print("Re-signed IPA successfully.")
+    app_dir_name = ipa_file_name[:-4] + ".app"
+    app_dir_path = payload_dir / app_dir_name
+
+    # Move the .app directory into Payload (assuming it's extracted correctly)
+    subprocess.run(["mv", str(Path(downloads_dir) / ipa_file_name), str(app_dir_path)])
+
+    # Zip up the Payload directory into an IPA file
+    subprocess.run(["zip", "-qr", str(ipa_file_path), str(payload_dir)])
+
+    print(f"Repackaged IPA saved to: {ipa_file_path}")
 
 def process_app(app_config):
     print(f"Processing app configuration for {app_config['name']}")
@@ -186,8 +185,8 @@ def process_app(app_config):
     # Modify Info.plist with workflow ID as build number
     modify_info_plist(payload_path, run_id)
 
-    # Re-sign the IPA after modification
-    re_sign_ipa(save_path, payload_path)
+    # Repackage the IPA after modification
+    repackage_ipa(downloads_dir, ipa_file_name)
 
     # Get screenshots from the specified directory
     screenshots_directory = app_config.get('screenshots_directory', '')

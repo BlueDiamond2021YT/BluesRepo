@@ -31,3 +31,7 @@ To add this source to Alt/SideStore, either press the button at the top of the r
 ```
 https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/sidestore_repo.json
 ```
+And optionaly, add the repo status of this source to see when the last refresh was and wherever the last workflow failed or succeseded.
+```
+https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/repo_status.json
+```

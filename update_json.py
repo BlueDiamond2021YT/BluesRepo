@@ -5,7 +5,6 @@ import zipfile
 import io
 from pathlib import Path
 import plistlib
-import subprocess
 
 # Get the GitHub token from environment variables
 GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
@@ -51,60 +50,47 @@ def extract_icon_and_metadata(ipa_path, app_name):
         else:
             print("No entitlements found.")
 
-        # Read Info.plist for permissions and version/build numbers
+        # Read Info.plist for permissions
         info_plist_path = f"{payload_path}Info.plist"
-        build_number = None
-        version_number = None
-        
         if info_plist_path in z.namelist():
             info_plist_data = z.read(info_plist_path)
             info_dict = plistlib.loads(info_plist_data)
             permissions['privacy'] = {key: value for key, value in info_dict.items() if "UsageDescription" in key}
             print(f"Extracted privacy permissions: {permissions['privacy']}")
-            
-            # Extract version and build number
-            version_number = info_dict.get("CFBundleShortVersionString", "Unknown")
-            build_number = info_dict.get("CFBundleVersion", "Unknown")
-            print(f"Extracted version: {version_number}, build number: {build_number}")
         else:
             print("No Info.plist found.")
 
-        return str(icon_path), permissions, version_number, build_number, payload_path
+        return str(icon_path), permissions
 
-def modify_info_plist(payload_path, workflow_id):
-    info_plist_file = Path(payload_path) / "Info.plist"
+def get_screenshots(screenshots_directory):
+    screenshots = []
+    print(f"Scanning directory for screenshots: {screenshots_directory}")
     
-    # Load the existing Info.plist
-    with open(info_plist_file, 'rb') as f:
-        plist_data = plistlib.load(f)
-
-    # Modify the CFBundleVersion to match the workflow ID
-    plist_data["CFBundleVersion"] = workflow_id
-
-    # Save the modified Info.plist back to disk
-    with open(info_plist_file, 'wb') as f:
-        plistlib.dump(plist_data, f)
-
-    print(f"Modified Info.plist with new build ID: {workflow_id}")
-
-def repackage_ipa(downloads_dir, ipa_file_name):
-    """Repackage the modified contents back into an IPA file."""
-    ipa_file_path = downloads_dir / f"{ipa_file_name[:-4]}-modified.ipa"
+    # Iterate through files in the specified directory
+    for filename in os.listdir(screenshots_directory):
+        if filename.endswith('.png'):
+            # Extract device type, dimensions, and screenshot number from filename
+            parts = filename.split('-')
+            
+            if len(parts) >= 3:
+                device_type = parts[0]  # e.g., iphone or ipad
+                dimensions = parts[1]   # e.g., 1170x2532
+                
+                width, height = dimensions.split('x')
+                image_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/{screenshots_directory.replace('./', '')}{filename}"
+                
+                screenshots.append({
+                    "imageURL": image_url,
+                })
+                print(f"Found screenshot: {image_url} with dimensions ({width}, {height})")
     
-    # Create a Payload directory and move the .app into it
-    payload_dir = Path(downloads_dir) / "Payload"
-    payload_dir.mkdir(parents=True, exist_ok=True)
+    # If there are any screenshots, add width and height to the last one only
+    if screenshots:
+        last_screenshot_index = len(screenshots) - 1
+        screenshots[last_screenshot_index]["width"] = int(width)
+        screenshots[last_screenshot_index]["height"] = int(height)
 
-    app_dir_name = ipa_file_name[:-4] + ".app"
-    app_dir_path = payload_dir / app_dir_name
-
-    # Move the .app directory into Payload (assuming it's extracted correctly)
-    subprocess.run(["mv", str(Path(downloads_dir) / ipa_file_name), str(app_dir_path)])
-
-    # Zip up the Payload directory into an IPA file
-    subprocess.run(["zip", "-qr", str(ipa_file_path), str(payload_dir)])
-
-    print(f"Repackaged IPA saved to: {ipa_file_path}")
+    return screenshots
 
 def process_app(app_config):
     print(f"Processing app configuration for {app_config['name']}")
@@ -170,23 +156,17 @@ def process_app(app_config):
         
         ipa_file_name = ipa_files[0]
         
-        version_id = latest_run['head_commit']['id'][:7]  # Use short SHA as version ID
-        save_path = downloads_dir / f"{ipa_file_name[:-4]}-{version_id}.ipa"
+        version = latest_run['head_commit']['id'][:7]
+        save_path = downloads_dir / f"{ipa_file_name[:-4]}-{version}.ipa"
 
         with open(save_path, 'wb') as ipa_file:
             ipa_file.write(z.read(ipa_file_name))
         
         print(f"Saved IPA file to: {save_path}")
 
-        icon_path, permissions, version_number, build_number, payload_path = extract_icon_and_metadata(save_path, app_config['name'])
+        icon_path, permissions = extract_icon_and_metadata(save_path, app_config['name'])
 
     download_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/downloads/{app_config['name']}/{os.path.basename(save_path)}"
-
-    # Modify Info.plist with workflow ID as build number
-    modify_info_plist(payload_path, run_id)
-
-    # Repackage the IPA after modification
-    repackage_ipa(downloads_dir, ipa_file_name)
 
     # Get screenshots from the specified directory
     screenshots_directory = app_config.get('screenshots_directory', '')
@@ -198,18 +178,16 @@ def process_app(app_config):
          "name": app_config['name'],
          "bundleIdentifier": app_config['bundle_identifier'],
          "developerName": SOURCE_REPO_OWNER,
-         "subtitle": app_config.get('subtitle', ''),
-         "localizedDescription": app_config.get('localizedDescription', ''),
+         "version": version,
+         "versionDate": latest_run['created_at'].split('T')[0],
+         "versionDescription": commit_message,
+         "downloadURL": download_url,
          "iconURL": f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/resources/icons/{os.path.basename(icon_path)}",
+         "localizedDescription": app_config.get('localizedDescription', ''),
          "tintColor": app_config.get('tintColor', ''),
-         "versions": [{
-             "version": version_number,
-             "buildVersion": build_number,
-             "date": latest_run['created_at'],  # ISO 8601 format date
-             "localizedDescription": commit_message,
-             "downloadURL": download_url,
-             "size": os.path.getsize(save_path),
-         }],
+         "category": app_config.get('category', ''),
+         "size": os.path.getsize(save_path),
+         
          # Add screenshots information.
          "screenshots": screenshots_info,
          
@@ -223,11 +201,13 @@ with open('app_config.json', 'r') as config_file:
 updated_apps = []
 for app_config in app_configs:
      app_data = process_app(app_config)
-     if app_data is not None:  # Ensure we only append valid data
+     if app_data:
          updated_apps.append(app_data)
 
 try:
      with open('sidestore_repo.json', 'r') as file:
+         if os.stat('sidestore_repo.json').st_size == 0:
+             raise ValueError("JSON file is empty.")
          data = json.load(file)
 except (FileNotFoundError, ValueError) as e:
      print(f"Error loading JSON file: {e}")
@@ -236,24 +216,13 @@ except (FileNotFoundError, ValueError) as e:
 for updated_app in updated_apps:
      unique_key = (updated_app["name"], updated_app["bundleIdentifier"])
      
-     existing_app_index = next((index for (index, d) in enumerate(data.get('apps', [])) 
+     existing_app_index = next((index for (index, d) in enumerate(data['apps']) 
                                 if (d["name"], d["bundleIdentifier"]) == unique_key), None)
      
      if existing_app_index is not None:
-         existing_versions = data['apps'][existing_app_index].get("versions", [])
-         
-         # Check if this version already exists based on version and build number
-         new_version_info = updated_app["versions"][0]  # Get the first item from versions array
-        
-         if not any(version["version"] == new_version_info["version"] and 
-                    version["buildVersion"] == new_version_info["buildVersion"] 
-                    for version in existing_versions):
-             existing_versions.append(new_version_info)  # Append new version details
-             data['apps'][existing_app_index]["versions"] = existing_versions  # Update versions list
-             print(f"Added new version {new_version_info['version']} (build {new_version_info['buildVersion']}) for {updated_app['name']}.")
+         data['apps'][existing_app_index] = updated_app
      else:
-         # If the app is new, add it with its first version.
-         data.setdefault('apps', []).append(updated_app)  # Append new app data
+         data['apps'].append(updated_app)
 
 try:
      with open('sidestore_repo.json', 'w') as file:

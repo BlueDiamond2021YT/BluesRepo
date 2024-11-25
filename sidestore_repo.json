@@ -6,7 +6,7 @@
         {
             "beta": true,
             "name": "LiveContainer Unstable",
-            "bundleIdentifier": "com.kdt.livecontainer.experimental",
+            "bundleIdentifier": "com.kdt.livecontainer",
             "developerName": "hugeBlack",
             "version": "11d8b7a",
             "versionDate": "2024-11-25",

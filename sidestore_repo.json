@@ -59,19 +59,6 @@
                 }
             },
             "versions": [
-                {
-                    "version": "11d8b7a",
-                    "versionDate": "2024-11-25",
-                    "versionDescription": "setObject debounce",
-                    "downloadURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/downloads/LiveContainer Unstable/com.kdt.livecontainer_3.1.0-11d8b7a.ipa"
-                },
-                {
-                    "version": "3.1.0",
-                    "buildNumber": "3.1.0",
-                    "versionDate": "2024-11-25",
-                    "versionDescription": "setObject debounce",
-                    "downloadURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/downloads/LiveContainer Unstable/com.kdt.livecontainer_3.1.0-11d8b7a.ipa"
-                }
             ]
         }
     ]

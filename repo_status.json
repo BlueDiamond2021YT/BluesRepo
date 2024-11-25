@@ -7,8 +7,8 @@
         {
             "title": "Workflow Succeeded.",
             "identifier": "repo_status",
-            "caption": "Last repo refresh: 2024-11-25 16:27:42\nLast modifed files:\n sidestore_repo.json",
-            "date": "2024-11-25T16:27:42.216391",
+            "caption": "Last repo refresh: 2024-11-25 16:49:06\nLast modifed files:\n repo_status.json",
+            "date": "2024-11-25T16:49:06.072276",
             "tintColor": "#27AE60"
         }
     ]

@@ -62,7 +62,15 @@
                     "NSNearbyInteractionUsageDescription": "The guest app is requesting for this permission.",
                     "NSPhotoLibraryUsageDescription": "The guest app is requesting for this permission."
                 }
-            }
+            },
+            "versions": [
+                {
+                    "version": "11d8b7a",
+                    "versionDate": "2024-11-25",
+                    "versionDescription": "setObject debounce",
+                    "downloadURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/downloads/LiveContainer Unstable/com.kdt.livecontainer_3.1.0-11d8b7a.ipa"
+                }
+            ]
         }
     ]
 }

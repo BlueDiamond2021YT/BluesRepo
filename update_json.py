@@ -86,16 +86,15 @@ def get_screenshots(screenshots_directory):
                 width, height = dimensions.split('x')
                 image_url = f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/{screenshots_directory.replace('./', '')}{filename}"
                 
-                screenshots.append({
+                screenshot_info = {
                     "imageURL": image_url,
-                })
+                    "width": int(width),
+                    "height": int(height)
+                }
+                
+                screenshots.append(screenshot_info)
                 print(f"Found screenshot: {image_url} with dimensions ({width}, {height})")
     
-    if screenshots:
-        last_screenshot_index = len(screenshots) - 1
-        screenshots[last_screenshot_index]["width"] = int(width)
-        screenshots[last_screenshot_index]["height"] = int(height)
-
     return screenshots
 
 def process_app(app_config):
@@ -184,15 +183,15 @@ def process_app(app_config):
          "name": app_config['name'],
          "bundleIdentifier": app_config['bundle_identifier'],
          "developerName": SOURCE_REPO_OWNER,
+         "subtitle": app_config.get('subtitle', ''),
+         "localizedDescription": app_config.get('localizedDescription', ''),
+         "iconURL": f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/resources/icons/{os.path.basename(icon_path)}",
+         "tintColor": app_config.get('tintColor', ''),
          "version": version_number,
          "buildNumber": build_number,
-         "versionDate": latest_run['created_at'].split('T')[0],
+         "versionDate": latest_run['created_at'],
          "versionDescription": commit_message,
          "downloadURL": download_url,
-         "iconURL": f"https://raw.githubusercontent.com/{CURRENT_REPO}/main/resources/icons/{os.path.basename(icon_path)}",
-         "localizedDescription": app_config.get('localizedDescription', ''),
-         "tintColor": app_config.get('tintColor', ''),
-         "category": app_config.get('category', ''),
          "size": os.path.getsize(save_path),
          
          # Add screenshots information.
@@ -231,10 +230,11 @@ for updated_app in updated_apps:
          if not any(version["version"] == updated_app["version"] and version["buildNumber"] == updated_app["buildNumber"] for version in existing_versions):
              existing_versions.append({
                  "version": updated_app["version"],
-                 "buildNumber": updated_app["buildNumber"],
-                 "versionDate": updated_app["versionDate"],
-                 "versionDescription": updated_app["versionDescription"],
+                 "date": updated_app["versionDate"],
+                 "size": updated_app["size"],
                  "downloadURL": updated_app["downloadURL"],
+                 "localizedDescription": updated_app["versionDescription"],
+                 "minOSVersion": app_config.get("minOSVersion", "")  # Optional field based on your needs
              })
              data['apps'][existing_app_index]["versions"] = existing_versions  # Update versions list
              print(f"Added new version {updated_app['version']} (build {updated_app['buildNumber']}) for {updated_app['name']}.")
@@ -242,10 +242,11 @@ for updated_app in updated_apps:
          # If the app is new, add it with its first version.
          updated_app["versions"] = [{
              "version": updated_app["version"],
-             "buildNumber": updated_app["buildNumber"],
-             "versionDate": updated_app["versionDate"],
-             "versionDescription": updated_app["versionDescription"],
+             "date": updated_app["versionDate"],
+             "size": updated_app["size"],
              "downloadURL": updated_app["downloadURL"],
+             "localizedDescription": updated_app["versionDescription"],
+             "minOSVersion": app_config.get("minOSVersion", "")  # Optional field based on your needs
          }]
          data.setdefault('apps', []).append(updated_app)  # Append new app data
 

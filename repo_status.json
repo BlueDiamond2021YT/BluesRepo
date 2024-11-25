@@ -5,11 +5,11 @@
     "description": "See the status of BluesRepo from Alt/SideStore!",
     "news": [
         {
-            "title": "Workflow Failed.",
+            "title": "Workflow Succeeded.",
             "identifier": "repo_status",
-            "caption": "Last repo refresh: 2024-11-25 18:10:54\nLast modifed files:\n update_json.py",
-            "date": "2024-11-25T18:10:54.641831",
-            "tintColor": "#FF0000"
+            "caption": "Last repo refresh: 2024-11-25 18:14:44\nLast modifed files:\n sidestore_repo.json",
+            "date": "2024-11-25T18:14:44.634214",
+            "tintColor": "#27AE60"
         }
     ]
 }

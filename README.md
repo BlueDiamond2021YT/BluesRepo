@@ -1,6 +1,6 @@
 > [!Caution]
 > THIS REPO IS EXPERIMENTAL AND DOES NOT FUNCTION CORRECTLY <br>
-> ALSO APP UPDATES DO NOT CURRENTLY WORK
+> ALSO APP UPDATES DO NOT WORK CORRECTLY
 
 > [!Note]
 > The workflow and python script where both made by AI

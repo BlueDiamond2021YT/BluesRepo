@@ -47,7 +47,7 @@ jobs:
             echo "No changes to commit."
             echo "changes=false" >> $GITHUB_ENV
           else
-            git commit -m "Update SideStore JSON file and add new IPA"
+            git commit -m "[AUTOMATIC] Refresh SideStore source"
             echo "changes=true" >> $GITHUB_ENV
           fi
 

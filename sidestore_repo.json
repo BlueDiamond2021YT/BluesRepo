@@ -8,15 +8,15 @@
             "name": "LiveContainer Unstable",
             "bundleIdentifier": "com.kdt.livecontainer",
             "developerName": "hugeBlack",
-            "version": "4cd537e",
-            "versionDate": "2024-12-03",
-            "versionDescription": "use kSecAttrAlias to fix Minecraft crashes hugeBlack/LiveContainer#6",
-            "downloadURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/downloads/LiveContainer Unstable/com.kdt.livecontainer_3.1.0-4cd537e.ipa",
+            "version": "8c21128",
+            "versionDate": "2024-12-04",
+            "versionDescription": "Fix [BUG]  hugeBlack/LiveContainer#7",
+            "downloadURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/downloads/LiveContainer Unstable/com.kdt.livecontainer_3.1.0-8c21128.ipa",
             "iconURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/resources/icons/LiveContainer Unstable_icon.png",
             "localizedDescription": "Run iOS app without actually installing it! This build contains experimental features that may not be stable and may be merged to upstream in the future.",
             "tintColor": "#0784FC",
             "category": "utilities",
-            "size": 2740007,
+            "size": 2740159,
             "screenshots": [
                 {
                     "imageURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/resources/screenshots/LiveContainer/iphone-1170x2532-2.png"

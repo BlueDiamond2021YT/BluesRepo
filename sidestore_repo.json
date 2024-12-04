@@ -8,15 +8,15 @@
             "name": "LiveContainer Unstable",
             "bundleIdentifier": "com.kdt.livecontainer",
             "developerName": "hugeBlack",
-            "version": "46dc979",
+            "version": "8c21128",
             "versionDate": "2024-12-04",
-            "versionDescription": "new approach, fix [BUG]  hugeBlack/LiveContainer#7",
-            "downloadURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/downloads/LiveContainer Unstable/com.kdt.livecontainer_3.1.0-46dc979.ipa",
+            "versionDescription": "Fix [BUG]  hugeBlack/LiveContainer#7",
+            "downloadURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/downloads/LiveContainer Unstable/com.kdt.livecontainer_3.1.0-8c21128.ipa",
             "iconURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/resources/icons/LiveContainer Unstable_icon.png",
             "localizedDescription": "Run iOS app without actually installing it! This build contains experimental features that may not be stable and may be merged to upstream in the future.",
             "tintColor": "#0784FC",
             "category": "utilities",
-            "size": 2741392,
+            "size": 2740154,
             "screenshots": [
                 {
                     "imageURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/resources/screenshots/LiveContainer/iphone-1170x2532-2.png"

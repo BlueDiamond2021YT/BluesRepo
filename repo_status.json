@@ -7,8 +7,8 @@
         {
             "title": "Workflow Succeeded.",
             "identifier": "repo_status",
-            "caption": "Last repo refresh: 2024-12-09 05:43:05\nLast modifed files:\n downloads/LiveContainer Unstable/com.kdt.livecontainer_3.1.0-df7a822.ipa, sidestore_repo.json",
-            "date": "2024-12-09T05:43:05.317121",
+            "caption": "Last repo refresh: 2024-12-09 06:32:25\nLast modifed files:\n repo_status.json",
+            "date": "2024-12-09T06:32:25.331368",
             "tintColor": "#27AE60"
         }
     ]

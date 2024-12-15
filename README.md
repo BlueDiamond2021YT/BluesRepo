@@ -2,7 +2,7 @@
 > THIS REPO IS EXPERIMENTAL AND DOES NOT FUNCTION CORRECTLY <br>
 > BROKEN IN SIDESTORE 0.6.0 ALPHA
 
-> [!Note]
+> [!Warning]
 > The workflow and python script where both made by AI
 
 # BlueDiamonds AltStore Repo

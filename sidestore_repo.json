@@ -8,15 +8,15 @@
             "name": "LiveContainer Unstable",
             "bundleIdentifier": "com.kdt.livecontainer",
             "developerName": "hugeBlack",
-            "version": "d23ae3a",
-            "versionDate": "2024-12-29",
-            "versionDescription": "fix #281,#279 add isolate app group option, add jitless diagnose for lc2, fix NUD tweak issue when filepicker fix is enabled",
-            "downloadURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/downloads/LiveContainer Unstable/com.kdt.livecontainer_3.1.56-d23ae3a.ipa",
+            "version": "ad60e48",
+            "versionDate": "2025-01-02",
+            "versionDescription": "fix #291, impelement #285",
+            "downloadURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/downloads/LiveContainer Unstable/com.kdt.livecontainer_3.1.57-ad60e48.ipa",
             "iconURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/resources/icons/LiveContainer Unstable_icon.png",
             "localizedDescription": "Run iOS app without actually installing it! This build contains experimental features that may not be stable and may be merged to upstream in the future.",
             "tintColor": "#0784FC",
             "category": "utilities",
-            "size": 2943879,
+            "size": 2945188,
             "screenshots": [
                 {
                     "imageURL": "https://raw.githubusercontent.com/BlueDiamond2021YT/BluesRepo/main/resources/screenshots/LiveContainer/iphone-1170x2532-2.png"
